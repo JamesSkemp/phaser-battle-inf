@@ -24,6 +24,27 @@ export default class Game extends Phaser.Game {
 	}
 };
 
+/**
+ * Workaround for inability to scale in Phaser 3.
+ * From http://www.emanueleferonato.com/2018/02/16/how-to-scale-your-html5-games-if-your-framework-does-not-feature-a-scale-manager-or-if-you-do-not-use-any-framework/
+ */
+function resize() {
+	let canvas = document.querySelector("canvas");
+	let width = window.innerWidth;
+	let height = window.innerHeight;
+	let wratio = width / height;
+	let ratio = Number(gameConfig.width) / Number(gameConfig.height);
+	if (wratio < ratio) {
+		canvas.style.width = width + "px";
+		canvas.style.height = (width / ratio) + "px";
+	} else {
+		canvas.style.width = (height * ratio) + "px";
+		canvas.style.height = height + "px";
+	}
+}
+
 window.onload = () => {
 	var game = new Game(gameConfig);
+	resize();
+	window.addEventListener('resize', resize, true);
 };
