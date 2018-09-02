@@ -12,7 +12,7 @@ const gameConfig: GameConfig = {
 
 export default class Game extends Phaser.Game {
 	constructor(config: GameConfig) {
-		console.log((new Date).toISOString() + ' : Entered Game constructor()');
+		console.log((new Date()).toISOString() + " : Entered Game constructor()");
 
 		super(config);
 
@@ -43,7 +43,7 @@ function resize() {
 }
 
 window.onload = () => {
-	var game = new Game(gameConfig);
+	const game = new Game(gameConfig);
 	resize();
 	window.addEventListener("resize", resize, true);
 };

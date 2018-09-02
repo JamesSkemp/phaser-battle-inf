@@ -4,18 +4,17 @@ export default class MainMenu extends Phaser.Scene {
 	 */
 	public static Name: string = "MainMenu";
 
-	preload(): void {
-		this.load.path = 'assets/';
-		this.load.image('phaser_pixel_medium_flat');
+	public preload(): void {
+		this.load.path = "assets/";
+		this.load.image("phaser_pixel_medium_flat");
 	}
 
-	create(): void {
-		console.log((new Date).toISOString() + ' : Entered MainMenu create()');
+	public create(): void {
+		console.log((new Date()).toISOString() + " : Entered MainMenu create()");
 
-		this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'phaser_pixel_medium_flat');
+		this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, "phaser_pixel_medium_flat");
 	}
 
-	update() : void {
-
+	public update(): void {
 	}
 }
