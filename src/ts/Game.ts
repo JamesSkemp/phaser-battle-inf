@@ -8,7 +8,7 @@ const gameConfig: GameConfig = {
 	height: 600,
 	type: Phaser.AUTO,
 	parent: "content",
-	title: "Battle INF developed in Phaser 3 with TypeScript, NodeJS, and VS Code"
+	title: "Phaser Battle INF, developed in Phaser 3 with TypeScript, NodeJS, and VS Code"
 };
 
 export default class Game extends Phaser.Game {
