@@ -12,7 +12,7 @@ const gameConfig: GameConfig = {
 
 export default class Game extends Phaser.Game {
 	constructor(config: GameConfig) {
-		console.log((new Date()).toISOString() + " : Entered Game constructor()");
+		window.console.log((new Date()).toISOString() + " : Entered Game constructor()");
 
 		super(config);
 

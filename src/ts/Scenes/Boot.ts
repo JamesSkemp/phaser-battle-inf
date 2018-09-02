@@ -10,7 +10,7 @@ export default class Boot extends Phaser.Scene {
 	}
 
 	public create(): void {
-		console.log((new Date()).toISOString() + " : Entered Boot create()");
+		window.console.log((new Date()).toISOString() + " : Entered Boot create()");
 
 		this.scene.start(Preloader.Name);
 	}

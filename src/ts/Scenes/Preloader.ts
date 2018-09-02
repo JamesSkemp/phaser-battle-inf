@@ -11,7 +11,7 @@ export default class Preloader extends Phaser.Scene {
 	}
 
 	public create(): void {
-		console.log((new Date()).toISOString() + " : Entered Preloader create()");
+		window.console.log((new Date()).toISOString() + " : Entered Preloader create()");
 
 		this.scene.start(MainMenu.Name);
 	}
