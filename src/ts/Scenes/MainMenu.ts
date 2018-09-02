@@ -10,7 +10,7 @@ export default class MainMenu extends Phaser.Scene {
 	}
 
 	public create(): void {
-		window.console.log((new Date()).toISOString() + " : Entered MainMenu create()");
+		console.log((new Date()).toISOString() + " : Entered MainMenu create()");
 
 		this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, "phaser_pixel_medium_flat");
 	}
