@@ -9,6 +9,7 @@ var buffer = require("vinyl-buffer");
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var pump = require('pump');
+var tslint = require('gulp-tslint');
 
 var paths = {
 	content: [
@@ -19,6 +20,14 @@ var paths = {
 		"src/*.html"
 	]
 };
+
+gulp.task("lint:ts", function() {
+	return gulp.src("src/ts/**/*.ts")
+		.pipe(tslint({
+			formatter: "verbose"
+		}))
+		.pipe(tslint.report())
+});
 
 gulp.task("copy-html", function () {
 	return gulp.src(paths.content, { base: "src" })
@@ -33,7 +42,9 @@ gulp.task("copy-phaser", function () {
 gulp.task("default2", ["copy-html", "copy-phaser"], function (cb) {
 	pump(
 		[
-			gulp.src("./src/ts/**/*.ts").pipe(tsProject()),
+			gulp
+				.src("./src/ts/**/*.ts")
+				.pipe(tsProject()),
 			//concat('app.js'),
 			/*uglify({
 				warnings: false,
