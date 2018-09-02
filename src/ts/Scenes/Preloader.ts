@@ -69,18 +69,18 @@ export default class Preloader extends Phaser.Scene {
 
 		assetText.setOrigin(0.5, 0.5);
 
-		this.load.on("progress", function (value) {
+		this.load.on("progress", (value) => {
 			percentText.setText(parseInt(value * 100 + "") + "%");
 			progressBar.clear();
 			progressBar.fillStyle(0xffffff, 1);
 			progressBar.fillRect((width / 4) + 10, (height / 2) - 30 + 10, (width / 2 - 10 - 10) * value, 30);
 		});
 
-		this.load.on("fileprogress", function (file) {
+		this.load.on("fileprogress", (file) => {
 			assetText.setText("Loading asset: " + file.key);
 		});
 
-		this.load.on("complete", function () {
+		this.load.on("complete",  () => {
 			progressBar.destroy();
 			progressBox.destroy();
 			loadingText.destroy();
