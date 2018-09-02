@@ -1,3 +1,5 @@
+import MainGame from "./MainGame";
+
 export default class MainMenu extends Phaser.Scene {
 	/**
 	 * Unique name of the scene.
@@ -5,14 +7,12 @@ export default class MainMenu extends Phaser.Scene {
 	public static Name: string = "MainMenu";
 
 	public preload(): void {
-		this.load.path = "assets/";
-		this.load.image("phaser_pixel_medium_flat");
 	}
 
 	public create(): void {
 		console.log((new Date()).toISOString() + " : Entered MainMenu create()");
 
-		this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, "phaser_pixel_medium_flat");
+		this.scene.start(MainGame.Name);
 	}
 
 	public update(): void {

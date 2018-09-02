@@ -8,6 +8,8 @@ export default class Preloader extends Phaser.Scene {
 
 	public preload(): void {
 		this.load.path = "assets/";
+
+		this.load.image("phaser_pixel_medium_flat");
 	}
 
 	public create(): void {
