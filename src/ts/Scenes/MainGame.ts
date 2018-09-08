@@ -19,18 +19,16 @@ export default class MainGame extends Phaser.Scene {
 		this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, "phaser_pixel_medium_flat");
 
 		this.consoleText = this.add.text(50, 50, "");
+		this.consoleText.setWordWrapWidth(this.cameras.main.width * .9);
 
 		this.player = new Player();
 
-		this.player.log("Created");
-		this.player.log("Line 1");
-		this.player.log("Line 2");
-		this.player.log("Line 3");
+		this.player.addInitialLogMessages();
 
 		console.log(this.player);
 	}
 
 	public update(): void {
-		this.consoleText.setText(this.player.batteLog.join());
+		this.consoleText.setText(this.player.battleLog.join("\n"));
 	}
 }
