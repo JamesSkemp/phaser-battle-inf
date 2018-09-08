@@ -3,6 +3,7 @@ import Stats from "./Stats";
 
 export default class Unit {
 	public name: string;
+	public type: string;
 	public level = 1;
 	public exp = 0;
 	public stats: Stats;
