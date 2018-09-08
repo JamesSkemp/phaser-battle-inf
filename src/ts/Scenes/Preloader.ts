@@ -12,6 +12,9 @@ export default class Preloader extends Phaser.Scene {
 		this.load.path = "assets/";
 
 		this.load.image("phaser_pixel_medium_flat");
+		for (let i = 0; i < 100; i++) {
+			this.load.image("phaser_pixel_medium_flat" + i, "phaser_pixel_medium_flat.png");
+		}
 	}
 
 	public create(): void {
