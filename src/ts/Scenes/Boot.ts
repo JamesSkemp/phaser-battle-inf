@@ -7,6 +7,7 @@ export default class Boot extends Phaser.Scene {
 	public static Name: string = "Boot";
 
 	public preload(): void {
+		// TODO?
 	}
 
 	public create(): void {

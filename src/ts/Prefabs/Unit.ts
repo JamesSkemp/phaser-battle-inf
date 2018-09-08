@@ -14,7 +14,6 @@ export default class Unit {
 		this.name = "Unnamed Unit " + Utilities.randomInt(100, 999);
 		this.level = 1;
 		this.exp = 0;
-		// TODO
 		this.stats = new Stats();
 		this.skills = {};
 	}

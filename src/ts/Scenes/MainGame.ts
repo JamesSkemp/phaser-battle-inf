@@ -11,6 +11,7 @@ export default class MainGame extends Phaser.Scene {
 	public consoleText: Phaser.GameObjects.Text;
 
 	public preload(): void {
+		// TODO?
 	}
 
 	public create(): void {

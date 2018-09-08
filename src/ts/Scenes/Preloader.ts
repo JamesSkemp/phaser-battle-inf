@@ -21,6 +21,7 @@ export default class Preloader extends Phaser.Scene {
 	}
 
 	public update(): void {
+		// TODO?
 	}
 
 	/**

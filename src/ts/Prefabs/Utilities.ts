@@ -7,7 +7,7 @@ export default class Utilities {
 	public static mergeObjects(a, b) {
 		for (const i in b) {
 			if (Utilities.isObject(b[i])) {
-				a[i] = (b[i].__dontMerge ? null : Utilities.mergeObjects({}, b[i]));
+				a[i] = (b[i].dontMerge ? null : Utilities.mergeObjects({}, b[i]));
 			} else if (Utilities.isArray(b[i])) {
 				a[i] = Utilities.mergeObjects([], b[i]);
 			} else {
