@@ -28,6 +28,9 @@ export default class MainGame extends Phaser.Scene {
 
 		console.log(this.player);
 
+		this.player.initNewPlayer();
+		console.log(this.player);
+
 		// Add a timer to check for automatic money.
 		/*this.time.addEvent({
 			// Run every sixty seconds.

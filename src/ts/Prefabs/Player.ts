@@ -1,3 +1,6 @@
+import Hero from "./Hero";
+import Utilities from "./Utilities";
+
 export default class Player {
 
 	public money: number = 0;
@@ -64,5 +67,22 @@ export default class Player {
 		this.log("Your heroes will grow based on every little action. Stat points and skills will all grow based on what a hero does and has done to them in battle.");
 		this.log("");
 		this.log('Start off by clicking "Start Battle"');
+	}
+
+	public initNewPlayer() {
+		this.createNewHero();
+		this.heroes[0].reserve = false;
+
+		// TODO buildings
+	}
+
+	public createNewHero() {
+		const hero = new Hero();
+		hero.setup(this.heroes.length);
+		this.heroes.push(Utilities.mergeObjects({}, hero));
+		// TODO switch to the following?
+		//this.heroes.push(hero);
+
+		console.log(this.heroes);
 	}
 }

@@ -1,4 +1,5 @@
 import BattleUnit from "./BattleUnit";
+import NameGenerator from "./NameGenerator";
 
 export default class Hero extends BattleUnit {
 
@@ -10,6 +11,8 @@ export default class Hero extends BattleUnit {
 	public constructor() {
 		super();
 		this.type = "hero";
+
+		this.name = NameGenerator.randomName(2, 5) + " " + NameGenerator.randomName(2, 5);
 	}
 
 	public setup(index: number) {
