@@ -9,12 +9,15 @@ export default class Unit {
 	public stats: Stats;
 	// TODO
 	public skills;
-
-	public initUnit() {
-		this.name = "Unnamed Unit " + Utilities.randomInt(100, 999);
+	
+	public constructor() {
 		this.level = 1;
 		this.exp = 0;
 		this.stats = new Stats();
 		this.skills = {};
+	}
+
+	public initUnit() {
+		this.name = "Unnamed Unit " + Utilities.randomInt(100, 999);
 	}
 }

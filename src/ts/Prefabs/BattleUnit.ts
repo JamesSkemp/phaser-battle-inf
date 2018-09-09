@@ -13,7 +13,12 @@ export default class BattleUnit extends Unit {
 
 	public actionCode = "";
 
+	public constructor() {
+		super();
+	}
+
 	public initBattleUnit() {
+		// TODO might be able to just move this into the BattleUnit constructor.
 		this.initUnit();
 
 		this.battle = null;
