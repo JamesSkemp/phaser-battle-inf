@@ -28,9 +28,12 @@ export default class MainGame extends Phaser.Scene {
 		this.player.addInitialLogMessages();
 
 		this.player.initNewPlayer();
-		console.log(this.player);
 
-		console.log(new Monster(this.player.battleLevel, null));
+
+		// TODO move elsewhere
+		this.player.createMonsterParty(this.player.battleHeroes.length);
+
+		console.log(this.player);
 
 		// Add a timer to check for automatic money.
 		/*this.time.addEvent({

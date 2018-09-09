@@ -43,4 +43,11 @@ export default class BattleUnit extends Unit {
 		this.battleStatsMax = Utilities.mergeObjects({}, this.battleStats);
 		this.battleStatusEffects = {};
 	}
+
+	public createStatDisplay(stat: string) {
+		// TODO this was used for display previously
+		let ratio = this.battleStats[stat] / (this.battleStatsMax[stat] * 1.0);
+
+		return "[" + this.battleStats[stat] + " / " + this.battleStatsMax[stat] + " " + Utilities.statDisplayString(stat) + "]";
+	}
 }

@@ -68,10 +68,6 @@ export default class ActionCompiler {
 		}
 	}
 
-	public static makeStr(text) {
-		return "'" + text + "'";
-	}
-
 	public static compileAction(action) {
 		switch (action.code) {
 			case "Attack":
@@ -92,5 +88,9 @@ export default class ActionCompiler {
 			default:
 				return "battle.selectTarget('" + action.targetType + "', '" + action.select + "');";
 		}
+	}
+
+	private static makeStr(text) {
+		return "'" + text + "'";
 	}
 }

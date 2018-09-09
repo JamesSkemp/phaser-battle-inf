@@ -1,5 +1,6 @@
 import BattleActions from "./BattleActions";
 import Party from "./Party";
+import BattleUnit from "./BattleUnit";
 
 export default class Battle extends BattleActions {
 	// Won't be necessary once mergeObjects is refactored.
@@ -40,10 +41,10 @@ export default class Battle extends BattleActions {
 
 	/**
 	 * Sorts units in a descending order.
-	 * @param a 
-	 * @param b 
+	 * @param a First unit to compare.
+	 * @param b Second unit to compare.
 	 */
-	public unitSorter(a, b) {
+	public unitSorter(a: BattleUnit, b: BattleUnit) {
 		return b.actScore - a.actScore;
 	}
 

@@ -37,4 +37,15 @@ export default class Utilities {
 	public static selectRandom(array) {
 		return array[this.randomInt(0, array.length - 1)];
 	}
+
+	public static statDisplayString(statName: string): string {
+		switch (statName) {
+			case "hp": return "HP";
+			case "sp": return "SP";
+			case "attack": return "ATK";
+			case "defense": return "DEF";
+			case "dexterity": return "DEX";
+			case "magic": return "MAG";
+		}
+	}
 }

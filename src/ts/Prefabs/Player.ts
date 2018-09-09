@@ -1,5 +1,6 @@
 import Hero from "./Hero";
 import Utilities from "./Utilities";
+import Monster from "./Monster";
 
 export default class Player {
 
@@ -82,5 +83,24 @@ export default class Player {
 		this.heroes.push(Utilities.mergeObjects({}, hero));
 		// TODO switch to the following?
 		//this.heroes.push(hero);
+	}
+
+	public createMonsterParty(max) {
+		let numberOfMonsters = Utilities.randomInt(max - 1, max + 1);
+		if (numberOfMonsters < 1) {
+			numberOfMonsters = 1;
+		}
+
+		const monsters = [];
+
+		for (let i = 0; i < numberOfMonsters; i++) {
+			const monster = new Monster(this.battleLevel, null);
+			// TODO not sure what this should have been?
+			monster.initForBattle(null);
+			this.log(monster.name + " appeared " + monster.createStatDisplay("hp"));
+			monsters.push(monster);
+		}
+
+		this.monsters = monsters;
 	}
 }
