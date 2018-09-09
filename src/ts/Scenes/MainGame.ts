@@ -1,4 +1,5 @@
 import Player from "../Prefabs/Player";
+import Monster from "../Prefabs/Monster";
 
 export default class MainGame extends Phaser.Scene {
 	/**
@@ -28,6 +29,8 @@ export default class MainGame extends Phaser.Scene {
 
 		this.player.initNewPlayer();
 		console.log(this.player);
+
+		console.log(new Monster(this.player.battleLevel, null));
 
 		// Add a timer to check for automatic money.
 		/*this.time.addEvent({

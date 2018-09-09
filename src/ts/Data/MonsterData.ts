@@ -180,4 +180,115 @@ export default class MonsterData {
 		}
 		// Dont need to define a max/end level, a random group and a random monster will be chosen
 	];
+
+	public static Types = {
+		Rat_Man: {
+			name: "Rat Man",
+			hp: 3,
+			attack: 1.5,
+			defense: 0,
+			dexterity: 1.2,
+			magic: 0,
+			sp: 1
+		},
+		Wolf: {
+			name: "Wolf",
+			hp: 3.3,
+			attack: 1.7,
+			defense: 0,
+			dexterity: 1,
+			magic: 0,
+			sp: 1
+		},
+		Spider: {
+			name: "Spider",
+			hp: 2.5,
+			attack: 1.7,
+			defense: 0,
+			dexterity: 1.2,
+			magic: 0,
+			sp: 1
+		},
+		Kobold: {
+			name: "Kobold",
+			hp: 4,
+			attack: 2.2,
+			defense: 0,
+			dexterity: 1,
+			magic: 1,
+			sp: 2
+		},
+		Boar: {
+			name: "Board",
+			hp: 6,
+			attack: 2,
+			defense: 0,
+			dexterity: 1.2,
+			magic: 0,
+			sp: 2
+		},
+		Slime: {
+			name: "Slime",
+			hp: 4,
+			attack: 1.5,
+			defense: 0,
+			dexterity: 0.8,
+			magic: 2,
+			sp: 2
+		},
+		Zombie: {
+			name: "Zombie",
+			hp: 8,
+			attack: 2,
+			defense: 0,
+			dexterity: 0.8,
+			magic: 0,
+			sp: 3
+		},
+		Harpy: {
+			name: "Harpy",
+			hp: 4,
+			attack: 2,
+			defense: 0,
+			dexterity: 1,
+			magic: 2,
+			sp: 3
+		},
+		Bear: {
+			name: "Bear",
+			hp: 8,
+			attack: 1,
+			defense: 0,
+			dexterity: 1,
+			magic: 0,
+			sp: 3
+		},
+		Troll: {
+			name: "Troll",
+			hp: 8,
+			attack: 2.4,
+			defense: 0,
+			dexterity: 0.9,
+			magic: 0,
+			sp: 4
+		},
+		Golem: {
+			name: "Golem",
+			hp: 8,
+			attack: 2,
+			defense: 0,
+			dexterity: 0.7,
+			magic: 2,
+			sp: 4
+		},
+		Giant_Scorpion: {
+			name: "Giant Scorpion",
+			hp: 7,
+			attack: 2,
+			defense: 0,
+			dexterity: 1.2,
+			magic: 0,
+			sp: 4
+		},
+	};
 }
