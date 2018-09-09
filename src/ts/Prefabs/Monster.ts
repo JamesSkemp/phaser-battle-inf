@@ -3,6 +3,7 @@ import MonsterGenProperties from "./MonsterGenProperties";
 import MonsterData from "../Data/MonsterData";
 import Utilities from "./Utilities";
 import Stats from "./Stats";
+import ActionCompiler from "./ActionCompiler";
 
 export default class Monster extends BattleUnit {
 	public stats: Stats;
@@ -81,6 +82,6 @@ export default class Monster extends BattleUnit {
 			}
 		}
 
-		// TODO
+		this.actionCode = ActionCompiler.compileActions(monsterBehavior.actions());
 	}
 }
