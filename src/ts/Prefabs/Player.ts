@@ -1,6 +1,7 @@
 import Hero from "./Hero";
 import Utilities from "./Utilities";
 import Monster from "./Monster";
+import PlayerUnlocks from "./PlayerUnlocks";
 
 export default class Player {
 
@@ -41,7 +42,7 @@ export default class Player {
 	public lastShopRefreshTimestamp = 0;
 	public lastTrainingCheckTimestamp = 0;
 
-	public unlock = {};
+	public unlock: PlayerUnlocks;
 
 	public constructor() {
 		// TODO
@@ -102,5 +103,18 @@ export default class Player {
 		}
 
 		this.monsters = monsters;
+	}
+
+	public addHeroToTraining(hero: Hero, buildingIndex: number) {
+		hero.trainingAreaIndex = buildingIndex;
+	}
+
+	public removeHeroInTraining(buildingIndex: number) {
+		for (const hero of this.heroes) {
+			if (hero.trainingAreaIndex === buildingIndex) {
+				hero.trainingAreaIndex = -1;
+				break;
+			}
+		}
 	}
 }
