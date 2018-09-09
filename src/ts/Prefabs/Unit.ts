@@ -9,7 +9,7 @@ export default class Unit {
 	public stats: Stats;
 	// TODO
 	public skills;
-	
+
 	public constructor() {
 		this.level = 1;
 		this.exp = 0;

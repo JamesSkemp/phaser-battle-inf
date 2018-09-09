@@ -25,6 +25,11 @@ export default class Utilities {
 		return min + Math.abs(min - max) * Math.random();
 	}
 
+	/**
+	 * Returns an integer between two numbers, inclusive.
+	 * @param min Minimum number to return.
+	 * @param max Maximum number to return.
+	 */
 	public static randomInt(min: number, max: number): number {
 		return Math.floor(Math.random() * ((max + 1) - min) + min);
 	}

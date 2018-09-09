@@ -82,7 +82,5 @@ export default class Player {
 		this.heroes.push(Utilities.mergeObjects({}, hero));
 		// TODO switch to the following?
 		//this.heroes.push(hero);
-
-		console.log(this.heroes);
 	}
 }

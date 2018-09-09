@@ -26,8 +26,6 @@ export default class MainGame extends Phaser.Scene {
 
 		this.player.addInitialLogMessages();
 
-		console.log(this.player);
-
 		this.player.initNewPlayer();
 		console.log(this.player);
 

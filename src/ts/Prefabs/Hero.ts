@@ -3,6 +3,9 @@ import NameGenerator from "./NameGenerator";
 import Stats from "./Stats";
 import GameStats from "./GameStats";
 import Equipment from "./Equipment";
+import Utilities from "./Utilities";
+import Item from "./Item";
+import ItemGenProperties from "./ItemGenProperties";
 
 export default class Hero extends BattleUnit {
 
@@ -46,6 +49,45 @@ export default class Hero extends BattleUnit {
 	public setup(index: number) {
 		this.index = index;
 
+		// Add starting equipment to the hero.
+		this.equip(new Item(new ItemGenProperties(1, 1, "hand", "SWORD")), true);
+		this.equip(new Item(new ItemGenProperties(1, 1, "body", "CHAIN")), true);
+		this.equip(new Item(new ItemGenProperties(1, 1, "legs", "CHAIN")), true);
+	}
+
+	public equip(item: Item, keepInInventory: boolean) {
+		console.log(item);
+		if (item.level > this.level) {
+			// TODO
+			console.log("The item is too high a level for the hero to equip.");
+			return;
+		}
+
+		if (Utilities.isArray(this.equipment[item.type])) {
+			// TODO
+		} else {
+			// Unequip the original item.
+			if (this.equipment[item.type] !== null) {
+				this.unequip(this.equipment[item.type], keepInInventory);
+			}
+
+			this.equipment[item.type] = item;
+		}
+
+		if (!keepInInventory) {
+			// TODO
+		}
+
 		// TODO
+	}
+
+	public unequip(item: Item, keepInInventory: boolean) {
+		// TODO
+	}
+
+	public addExp(amount: number) {
+		this.exp += amount;
+		this.totalExp += amount;
+		this.gameStats.totalExp += amount;
 	}
 }
