@@ -9,7 +9,7 @@ export default class BattleUnit extends Unit {
 
 	public battleStats: Stats = null;
 	public battleStatsMax = null;
-	public battleStatusEffects = {};
+	public battleStatusEffects = [];
 	public actScore: number = 0;
 	public skipNextTurn: boolean = false;
 
@@ -29,7 +29,7 @@ export default class BattleUnit extends Unit {
 
 		this.battleStats = null;
 		this.battleStatsMax = null;
-		this.battleStatusEffects = {};
+		this.battleStatusEffects = [];
 		this.actScore = 0;
 
 		this.actionCode = "";
@@ -43,7 +43,7 @@ export default class BattleUnit extends Unit {
 
 		// TODO
 		this.battleStatsMax = Utilities.mergeObjects({}, this.battleStats);
-		this.battleStatusEffects = {};
+		this.battleStatusEffects = [];
 	}
 
 	public createStatDisplay(stat: string) {
@@ -51,6 +51,11 @@ export default class BattleUnit extends Unit {
 		let ratio = this.battleStats[stat] / (this.battleStatsMax[stat] * 1.0);
 
 		return "[" + this.battleStats[stat] + " / " + this.battleStatsMax[stat] + " " + Utilities.statDisplayString(stat) + "]";
+	}
+
+	public attack(unit: BattleUnit, power, supressAttackMessage) {
+		// TODO
+		console.log(this.name + " attacks " + unit.name);
 	}
 
 	public receiveDamage(args) {
@@ -63,6 +68,13 @@ export default class BattleUnit extends Unit {
 
 		args.damage *= args.mult;
 		// TODO
+	}
+
+	public removeStatusEffect(effect) {
+		console.log(effect);
+		// TODO
+		//this.battleStatusEffects[effect].removed(this);
+		//this.battleStatusEffects[effect] = null;
 	}
 
 	public updateAfterBattle() {

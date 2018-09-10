@@ -54,6 +54,78 @@ export default class Battle extends BattleActions {
 		console.log("Battle Started");
 	}
 
+	public nextTurn() {
+		this.allUnits.sort(this.unitSorter);
+		// TODO remove
+		console.log("After sorting");
+		for (const unit of this.allUnits) {
+			console.log(unit.name + " : " + unit.actScore);
+		}
+
+		const performingUnit = this.allUnits[0];
+
+		const performingParty = this.getPartyOfUnit(performingUnit);
+		let opposingParty = null;
+
+		if (this.parties[0] === performingParty) {
+			opposingParty = this.parties[1];
+		} else {
+			opposingParty = this.parties[0];
+		}
+
+		this.unitTakeTurn(performingUnit, performingParty, opposingParty);
+
+		// TODO I feel like the original logic below isn't that good ...
+		for (const unit of this.allUnits) {
+			if (unit === performingUnit) {
+				unit.actScore -= unit.battleStats.dexterity;
+			} else {
+				unit.actScore += unit.battleStats.dexterity;
+			}
+		}
+
+		// TODO remove
+		console.log("After actScore changing");
+		for (const unit of this.allUnits) {
+			console.log(unit.name + " : " + unit.actScore);
+		}
+
+		if (this.done) {
+			return this.finalizeBattle();
+		}
+	}
+
+	public unitTakeTurn(unit: BattleUnit, performingParty, opposingParty) {
+		this.currentPerformingUnit = unit;
+		this.currentPerformingParty = performingParty;
+		this.currentOpposingParty = opposingParty;
+
+		this.checkStatusEffects(unit);
+
+		if (unit.skipNextTurn) {
+			unit.skipNextTurn = false;
+			return;
+		}
+
+		// TODO this is super messy.
+		let battleFn = function(battle) { };
+		eval("battleFn = function(battle) { " + unit.actionCode + "}");
+		battleFn(this);
+	}
+
+	public checkStatusEffects(unit: BattleUnit) {
+		let effectsToRemove = [];
+		console.log(unit.battleStatusEffects);
+		for (const statusEffect of unit.battleStatusEffects) {
+			// TODO
+			console.log(statusEffect);
+		}
+
+		for (const effectToRemove of effectsToRemove) {
+			unit.removeStatusEffect(effectToRemove);
+		}
+	}
+
 	public finalizeBattle() {
 		console.log("Battle Over");
 

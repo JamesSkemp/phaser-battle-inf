@@ -43,6 +43,8 @@ export default class MainGame extends Phaser.Scene {
 			callbackScope: this,
 			loop: true
 		});*/
+
+		window["GamePlayer"] = this.player;
 	}
 
 	public update(): void {

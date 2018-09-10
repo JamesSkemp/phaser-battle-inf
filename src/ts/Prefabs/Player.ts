@@ -58,6 +58,8 @@ export default class Player {
 			this.battleLog.splice(0, 1);
 		}
 		this.battleLog.push(message);
+		// TODO remove
+		console.log("Battle Log: " + message);
 	}
 
 	public clearLog(): void {
@@ -222,7 +224,6 @@ export default class Player {
 
 		this.createMonsterParty(this.battleHeroes.length);
 
-		// TODO this should be stored somewhere else
 		this.battle = new Battle();
 		this.battle.addParty(this.battleHeroes);
 		this.battle.addParty(this.monsters);
