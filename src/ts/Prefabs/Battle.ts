@@ -10,7 +10,7 @@ export default class Battle extends BattleActions {
 	/**
 	 * All units in the battle. Determines action order.
 	 */
-	public allUnits = [];
+	public allUnits: BattleUnit[] = [];
 	public round: number = 0;
 	public level: number = 0;
 	public done = false;
@@ -27,16 +27,44 @@ export default class Battle extends BattleActions {
 	}
 
 	public addParty(units) {
-		let unitList = [];
-		for (const i of units) {
-			unitList.push(units[i]);
-			this.allUnits.push(units[i]);
+		const unitList = [];
+		for (const unit of units) {
+			unitList.push(unit);
+			this.allUnits.push(unit);
 		}
 
 		this.parties.push({
 			livingUnits: unitList,
 			deadUnits: []
 		});
+	}
+
+	public initBattle() {
+		for (const party of this.parties) {
+			for (const livingUnit of party.livingUnits) {
+				livingUnit.initForBattle(this);
+			}
+		}
+
+		// Initialize the act order.
+		for (const unit of this.allUnits) {
+			unit.actScore = unit.battleStats.dexterity;
+		}
+
+		console.log("Battle Started");
+	}
+
+	public finalizeBattle() {
+		console.log("Battle Over");
+
+		for (const party of this.parties) {
+			for (const livingUnit of party.livingUnits) {
+				livingUnit.updateAfterBattle();
+			}
+			for (const deadUnit of party.deadUnits) {
+				deadUnit.updateAfterBattle();
+			}
+		}
 	}
 
 	/**

@@ -10,6 +10,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var pump = require('pump');
 var tslint = require('gulp-tslint');
+var sourcemaps = require('gulp-sourcemaps');
 
 var paths = {
 	content: [
@@ -40,31 +41,30 @@ gulp.task("copy-phaser", function () {
 });
 
 gulp.task("default2", ["copy-html", "copy-phaser"], function (cb) {
-	pump(
-		[
-			gulp
-				.src("./src/ts/**/*.ts")
-				.pipe(tsProject()),
-			//concat('app.js'),
-			/*uglify({
-				warnings: false,
-				parse: {
-					// parse options
-				},
-				compress: false,
-				mangle: false,
-				output: {
-					beautify: false,
-					preserve_line: false
-					// output options
-				},
-				nameCache: null, // or specify a name cache object
-				toplevel: false,
-				ie8: false,
-			}),*/
-			gulp.dest('dist')
-		], cb
-	);
+	gulp
+		.src("./src/ts/**/*.ts")
+		.pipe(sourcemaps.init())
+		.pipe(ts(tsProject()))
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('dist'))
+		;
+	//concat('app.js'),
+	/*uglify({
+		warnings: false,
+		parse: {
+			// parse options
+		},
+		compress: false,
+		mangle: false,
+		output: {
+			beautify: false,
+			preserve_line: false
+			// output options
+		},
+		nameCache: null, // or specify a name cache object
+		toplevel: false,
+		ie8: false,
+	}),*/
 	return;
 });
 

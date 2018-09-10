@@ -2,7 +2,7 @@ import Utilities from "../Prefabs/Utilities";
 import Status from "./Status";
 
 export default class SkillTrees {
-	public ActiveSkills = {
+	public static ActiveSkills = {
 		"Slash": {
 			req: []
 			, reqLevel: []
@@ -143,7 +143,7 @@ export default class SkillTrees {
 		}
 	};
 
-	public PassiveSkills = {
+	public static PassiveSkills = {
 		"Critical Strike": {
 			req: []
 			, reqLevel: []

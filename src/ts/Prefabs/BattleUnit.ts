@@ -1,6 +1,7 @@
 import Unit from "./Unit";
 import Stats from "./Stats";
 import Utilities from "./Utilities";
+import SkillTrees from "../Data/SkillTrees";
 
 export default class BattleUnit extends Unit {
 	public battle;
@@ -62,5 +63,26 @@ export default class BattleUnit extends Unit {
 
 		args.damage *= args.mult;
 		// TODO
+	}
+
+	public updateAfterBattle() {
+		while (true) {
+			const reqExp = Utilities.getExpRequiredForLevel(this.level);
+
+			if (this.exp >= reqExp) {
+				this.level++;
+				// TODO should this be zero, or take reqExp away from exp? if the latter, we might want to throw a break here and set exp = next level reqExp - 1?
+				this.exp = 0;
+			} else {
+				break;
+			}
+		}
+
+		for (const skillName of this.skills) {
+			// TODO there's a better way to handle this; necessary given how I setup skills
+			console.log(skillName);
+
+			// TODO
+		}
 	}
 }

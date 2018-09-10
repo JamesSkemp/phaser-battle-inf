@@ -28,8 +28,10 @@ export default class MainGame extends Phaser.Scene {
 
 		this.player.initNewPlayer();
 
+		console.log(this.player);
+
 		// TODO move elsewhere
-		this.player.createMonsterParty(this.player.battleHeroes.length);
+		this.player.startBattle();
 
 		console.log(this.player);
 

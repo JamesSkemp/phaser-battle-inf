@@ -3,6 +3,9 @@ import Utilities from "./Utilities";
 import Monster from "./Monster";
 import PlayerUnlocks from "./PlayerUnlocks";
 import Buildings from "../Data/Buildings";
+import Item from "./Item";
+import ItemGenProperties from "./ItemGenProperties";
+import Battle from "./Battle";
 
 export default class Player {
 
@@ -37,6 +40,7 @@ export default class Player {
 	public endless = false;
 	public paused = false;
 	public inBattle = false;
+	public battle: Battle = null;
 
 	public timeMultiplier = 1;
 
@@ -84,7 +88,10 @@ export default class Player {
 		this.buildBuilding(Buildings.getBuildingByName("Housing"));
 		this.buildBuilding(Buildings.getBuildingByName("Housing"));
 
-		// TODO add items
+		for (let i = 0; i < 10; i++) {
+			const startingItemProperties = new ItemGenProperties(1, 1, null, null);
+			this.addItem(new Item(startingItemProperties));
+		}
 	}
 
 	public createNewHero() {
@@ -178,7 +185,56 @@ export default class Player {
 		}
 	}
 
+	public addItem(item: Item) {
+		let result = "keep";
+
+		// TODO
+		//eval("itemFn = function(item) {" + this.inventoryActionCode + "}");
+		//itemFn(item);
+
+		if (result === "sell" || this.inventory.length >= this.inventoryMax) {
+			// TODO take into account shop discount?
+			this.money += Math.floor(item.moneyValue * 0.4);
+		} else if (this.inventory.length < this.inventoryMax) {
+			this.inventory.push(item);
+		}
+	}
+
+	public removeItem(item: Item) {
+		this.inventory.splice(this.inventory.indexOf(item), 1);
+	}
+
 	public restockShopItems() {
 		// TODO
+	}
+
+	public startBattle() {
+		this.battleHeroes = [];
+		for (const hero of this.heroes) {
+			if (!hero.reserve) {
+				this.battleHeroes.push(hero);
+			}
+		}
+
+		if (this.battleHeroes.length === 0) {
+			return;
+		}
+
+		this.createMonsterParty(this.battleHeroes.length);
+
+		// TODO this should be stored somewhere else
+		this.battle = new Battle();
+		this.battle.addParty(this.battleHeroes);
+		this.battle.addParty(this.monsters);
+
+		let level = 0;
+		for (const monster of this.monsters) {
+			level += monster.level;
+		}
+		this.battle.level = this.battleLevel;
+
+		this.battle.initBattle();
+
+		this.inBattle = true;
 	}
 }
