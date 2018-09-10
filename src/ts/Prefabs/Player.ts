@@ -2,11 +2,12 @@ import Hero from "./Hero";
 import Utilities from "./Utilities";
 import Monster from "./Monster";
 import PlayerUnlocks from "./PlayerUnlocks";
+import Buildings from "../Data/Buildings";
 
 export default class Player {
 
 	public money: number = 0;
-	public moneyPerMinute: number = 0;
+	public gpm: number = 0;
 
 	public battleLog: string[] = [];
 
@@ -72,10 +73,18 @@ export default class Player {
 	}
 
 	public initNewPlayer() {
+		this.unlock = new PlayerUnlocks();
 		this.createNewHero();
 		this.heroes[0].reserve = false;
 
-		// TODO buildings
+		// Add initial default buildings.
+		this.buildBuilding(Buildings.getBuildingByName("Townhall"));
+		this.buildBuilding(Buildings.getBuildingByName("Weapon Smith"));
+		this.buildBuilding(Buildings.getBuildingByName("Armor Smith"));
+		this.buildBuilding(Buildings.getBuildingByName("Housing"));
+		this.buildBuilding(Buildings.getBuildingByName("Housing"));
+
+		// TODO add items
 	}
 
 	public createNewHero() {
@@ -105,6 +114,57 @@ export default class Player {
 		this.monsters = monsters;
 	}
 
+	public buildBuilding(building) {
+		const name = building.name;
+
+		if (!this.buildings[name]) {
+			this.buildings[name] = [];
+		}
+
+		this.buildings[name].push({
+			name,
+			level: 1
+		});
+
+		if (building.onBuild) {
+			building.onBuild(this.buildings[name].length, this);
+		}
+
+		this.calculateLand();
+		this.calculateGPM();
+
+		// TODO add gem building too?
+		if (name === "Weapon Smith" || name === "Armor Smith") {
+			this.restockShopItems();
+		}
+	}
+
+	public calculateLand() {
+		let landUsed = 0;
+
+		for (const building of Buildings.Options) {
+			if (this.buildings[building.name]) {
+				landUsed += building.space * this.buildings[building.name].length;
+			}
+		}
+
+		this.landUsed = landUsed;
+	}
+
+	public calculateGPM() {
+		let gpm = 0;
+
+		for (const building of Buildings.Options) {
+			if (this.buildings[building.name]) {
+				for (const j of this.buildings[building.name]) {
+					gpm += building.gpm * j.level;
+				}
+			}
+		}
+
+		this.gpm = gpm;
+	}
+
 	public addHeroToTraining(hero: Hero, buildingIndex: number) {
 		hero.trainingAreaIndex = buildingIndex;
 	}
@@ -116,5 +176,9 @@ export default class Player {
 				break;
 			}
 		}
+	}
+
+	public restockShopItems() {
+		// TODO
 	}
 }

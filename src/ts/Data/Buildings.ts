@@ -1,7 +1,7 @@
 import Player from "../Prefabs/Player";
 
 export default class Buildings {
-	public Options = [
+	public static Options = [
 		{
 			name: "Townhall"
 			, single: true
@@ -94,4 +94,14 @@ export default class Buildings {
 			, upgradeCost: 500
 		}
 	];
+
+	public static getBuildingByName(name: string) {
+		for (const building of Buildings.Options) {
+			if (building.name === name) {
+				return building;
+			}
+		}
+
+		return null;
+	}
 }
