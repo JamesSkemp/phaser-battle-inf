@@ -1,4 +1,18 @@
 export default class Stats {
+	/**
+	 * Determine the difference between two Stats. First - Second.
+	 * @param statsA First set of stats.
+	 * @param statsB Second set of stats.
+	 */
+	public static getStatDifference(statsA: Stats, statsB: Stats): Stats {
+		const statsC = new Stats();
+
+		for (const stat of Object.keys(statsA)) {
+			statsC[stat] = statsA[stat] - statsB[stat];
+		}
+		return statsC;
+	}
+
 	public hp: number = 0;
 	public sp: number = 0;
 	public attack: number = 0;

@@ -10,6 +10,7 @@ export default class BattleUnit extends Unit {
 	public battleStatsMax = null;
 	public battleStatusEffects = {};
 	public actScore: number = 0;
+	public skipNextTurn: boolean = false;
 
 	public actionCode = "";
 
@@ -49,5 +50,17 @@ export default class BattleUnit extends Unit {
 		let ratio = this.battleStats[stat] / (this.battleStatsMax[stat] * 1.0);
 
 		return "[" + this.battleStats[stat] + " / " + this.battleStatsMax[stat] + " " + Utilities.statDisplayString(stat) + "]";
+	}
+
+	public receiveDamage(args) {
+		if (!args.reason) {
+			args.reason = "";
+		}
+		if (!args.mult) {
+			args.mult = 1;
+		}
+
+		args.damage *= args.mult;
+		// TODO
 	}
 }

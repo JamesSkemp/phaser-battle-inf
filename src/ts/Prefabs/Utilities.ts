@@ -48,4 +48,16 @@ export default class Utilities {
 			case "magic": return "MAG";
 		}
 	}
+
+	public static getExpRequiredForLevel(level: number) {
+		return 25 + (level - 1) * level * level * 10;
+	}
+
+	public static getExpRequiredForSkillLevel(base, mod, level) {
+		return Math.floor(base * Math.pow(mod, level) + base * Math.pow(mod, level - 1) * (level - 1));
+	}
+
+	public static addNumberCommas(num) {
+		return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
 }
