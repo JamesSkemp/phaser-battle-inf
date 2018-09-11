@@ -150,11 +150,12 @@ export default class Hero extends BattleUnit {
 		this.buildEquipmentList();
 	}
 
-	public unequip(item: Item, keepInventory: boolean, player) {
+	public unequip(item: Item, keepInventory: boolean, player: Player) {
 		if (!keepInventory) {
 			player.addItem(item);
 		}
 
+		// TODO
 		console.log("unequip");
 		console.log(this.equipment);
 		console.log(item);
@@ -218,6 +219,5 @@ export default class Hero extends BattleUnit {
 				, item: this.equipment.feet
 			}
 		];
-		console.log(this.equipmentList);
 	}
 }
