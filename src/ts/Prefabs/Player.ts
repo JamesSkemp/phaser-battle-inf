@@ -100,8 +100,6 @@ export default class Player {
 		const hero = new Hero();
 		hero.setup(this.heroes.length, this);
 		this.heroes.push(Utilities.mergeObjects({}, hero));
-		// TODO switch to the following?
-		//this.heroes.push(hero);
 	}
 
 	public createMonsterParty(max) {
@@ -260,6 +258,16 @@ export default class Player {
 		// TODO add gem code
 	}
 
+	public getShopPercentOff(buildingName: string): number {
+		if (this.buildings[buildingName]) {
+			let amountOff = 1 - Utilities.log10(this.buildings[buildingName].length + 10) / 2 + 0.5;
+			amountOff = parseInt(((1 - amountOff) * 100).toFixed(0), 10);
+			return amountOff;
+		}
+
+		return 0;
+	}
+
 	public startBattle() {
 		this.battleHeroes = [];
 		for (const hero of this.heroes) {
@@ -327,6 +335,25 @@ export default class Player {
 		}
 	}
 
+	public updateHeroStats() {
+		for (const hero of this.heroes) {
+			const oldStats = Utilities.mergeObjects({}, hero.stats);
+			hero.calculateStats();
+
+			const statChanges = [];
+			for (const stat of Object.keys(oldStats)) {
+				const diff = hero.stats[stat] - oldStats[stat];
+				if (diff !== 0) {
+					statChanges.push(Utilities.statDisplayString(stat) + " +" + diff.toFixed(2));
+				}
+			}
+
+			if (statChanges.length > 0) {
+				this.log(hero.name + " " + statChanges.join(" / "));
+			}
+		}
+	}
+
 	public getMaxHeroLevel(): number {
 		let level = 0;
 		for (const hero of this.heroes) {
@@ -360,6 +387,29 @@ export default class Player {
 		if (this.landProgress > 1) {
 			this.landProgress -= 1;
 			this.landMax += 1;
+		}
+	}
+
+	public prepareForSave() {
+		this.inBattle = false;
+		this.battleHeroes = [];
+
+		for (const hero of this.heroes) {
+			hero.battle = null;
+		}
+
+		for (const monster of this.monsters) {
+			monster.battle = null;
+		}
+	}
+
+	/**
+	 * Create new hero objects when data is loaded from storage.
+	 */
+	public loadHeroes() {
+		for (let savedHero of this.heroes) {
+			const hero = new Hero();
+			savedHero = Utilities.mergeObjects(hero, savedHero);
 		}
 	}
 }

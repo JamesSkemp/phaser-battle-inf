@@ -145,10 +145,7 @@ export default class Battle extends BattleActions {
 			partyIndex++;
 			let foundUnit = false;
 
-			console.log(party.livingUnits);
-
 			for (const livingUnit of party.livingUnits) {
-				// TODO
 				if (livingUnit === unit) {
 					foundUnit = true;
 					party.livingUnits.splice(party.livingUnits.indexOf(unit), 1);
