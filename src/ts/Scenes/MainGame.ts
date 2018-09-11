@@ -30,11 +30,6 @@ export default class MainGame extends Phaser.Scene {
 
 		console.log(this.player);
 
-		// TODO move elsewhere
-		this.player.startBattle();
-
-		console.log(this.player);
-
 		// Add a timer to check for automatic money.
 		/*this.time.addEvent({
 			// Run every sixty seconds.
@@ -45,6 +40,10 @@ export default class MainGame extends Phaser.Scene {
 		});*/
 
 		window["GamePlayer"] = this.player;
+
+		const startBattleButton = this.add.text(25, this.cameras.main.height - 25, "Start Battle", { fill: "#fff" });
+		startBattleButton.setInteractive();
+		startBattleButton.on("pointerdown", () => { this.player.startBattle(); console.log(this.player); });
 	}
 
 	public update(): void {

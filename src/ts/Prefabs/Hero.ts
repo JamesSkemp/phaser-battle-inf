@@ -158,7 +158,7 @@ export default class Hero extends BattleUnit {
 		console.log("unequip");
 		console.log(this.equipment);
 		console.log(item);
-		// TODO
+		// TODO add break;
 		/*
         for (var e in this.equipment)
         {
