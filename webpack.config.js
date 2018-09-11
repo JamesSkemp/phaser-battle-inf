@@ -6,8 +6,7 @@ const phaser = path.join(phaserModule, 'src/phaser.js')
 
 module.exports = {
 	entry: {
-		app: ['./src/ts/Game.ts'],
-		vendor: ['phaser']
+		app: './src/ts/Game.ts'
 	},
 	module: {
 		rules: [
@@ -25,6 +24,7 @@ module.exports = {
 		filename: 'app.js',
 		path: path.resolve(__dirname, 'dist')
 	},
+	devtool: "source-map",
 	plugins: [
 		new CopyWebpackPlugin([{
 			from: './node_modules/phaser/dist/phaser.min.js',
