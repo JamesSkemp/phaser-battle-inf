@@ -139,6 +139,41 @@ export default class Battle extends BattleActions {
 		}
 	}
 
+	public unitDead(unit: BattleUnit) {
+		let partyIndex = 0;
+		for (const party of this.parties) {
+			partyIndex++;
+			let foundUnit = false;
+
+			console.log(party.livingUnits);
+
+			for (const livingUnit in party.livingUnits) {
+				// TODO
+				/*if (livingUnit === unit) {
+					foundUnit = true;
+					party.livingUnits.splice(party.livingUnits.indexOf(unit), 1);
+					party.deadUnits.push(unit);
+					break;
+				}*/
+			}
+
+			if (foundUnit) {
+				// Check if there are any more living units
+				if (party.livingUnits.length === 0) {
+					this.done = true;
+				}
+			}
+
+			if (party.livingUnits.length > 0) {
+				this.winningIndex = partyIndex; // If the battle is done, this will be set to the winning party
+			}
+		}
+
+		if (unit["gameStats"]) {
+			unit["gameStats"].totalTimesDefeated++;
+		}
+	}
+
 	/**
 	 * Sorts units in a descending order.
 	 * @param a First unit to compare.

@@ -2,6 +2,7 @@ import Unit from "./Unit";
 import Stats from "./Stats";
 import Utilities from "./Utilities";
 import SkillTrees from "../Data/SkillTrees";
+import StatGrowth from "../Data/StatGrowth";
 
 export default class BattleUnit extends Unit {
 	public battle;
@@ -36,6 +37,9 @@ export default class BattleUnit extends Unit {
 	}
 
 	public initForBattle(battle) {
+		console.log("init for battle");
+		console.log(this);
+
 		this.battle = battle;
 		// TODO
 		this.battleStats = Utilities.mergeObjects({}, this.stats);
@@ -53,12 +57,88 @@ export default class BattleUnit extends Unit {
 		return "[" + this.battleStats[stat] + " / " + this.battleStatsMax[stat] + " " + Utilities.statDisplayString(stat) + "]";
 	}
 
-	public attack(unit: BattleUnit, power, supressAttackMessage) {
-		// TODO
-		console.log(this.name + " attacks " + unit.name);
+	public willCriticalHit(): boolean {
+		const skill = this.skills["Critical Dodge"];
+		console.log(this.skills);
+		if (skill) {
+			skill.uses++;
+			if (Utilities.randomInt(0, 100) < skill.level) {
+				return true;
+			}
+		}
+		return false;
 	}
 
-	public receiveDamage(args) {
+	public willDodge() {
+		const skill = this.skills["Dodge"];
+		console.log(this.skills);
+		if (skill) {
+			skill.uses++;
+			if (Utilities.randomInt(0, 100) < skill.level) {
+				return true;
+			}
+		}
+	}
+
+	public attack(unit: BattleUnit, power, supressAttackMessage: boolean): boolean {
+		const dodged = unit.willDodge();
+
+		if (!supressAttackMessage) {
+			// TODO
+			console.log(this.name + " attacks " + unit.name);
+			//player.log('<b>' + this.name + '</b> attacks <b>' + unit.name + '</b>');
+		}
+
+		if (!dodged) {
+			const damage = this.calculateBaseAttackDamageFor(unit) * power;
+			const critical = this.willCriticalHit();
+
+			this.incrementStats(StatGrowth.Action.didAttack);
+			unit.incrementStats(StatGrowth.Action.wasAttacked);
+
+			if (critical) {
+				// TODO
+				//player.log('<p class="padding">It\'s critical!</p>');
+				console.log("It's critical!");
+			}
+
+			const actualDamage = unit.receiveDamage({damage, mult: critical ? 2 : 1});
+
+			if (this["gameStats"]) {
+				this["gameStats"].physicalDamageDealt += actualDamage;
+			}
+
+			return true;
+		} else {
+			// TODO
+			//player.log('<b>' + unit.name + '</b> dodges the attack');
+			console.log(unit.name + " dodges the attack");
+
+			return false;
+		}
+	}
+
+	public defend() {
+		// TODO should this actually do something?
+		//player.log(this.name + ' is defending');
+		console.log(this.name + " is defending");
+	}
+
+	public useSkillOn(skillName, unit) {
+		// TODO
+		console.log(arguments);
+	}
+
+	public calculateBaseAttackDamageFor(unit) {
+		let damage = this.battleStats.attack - (unit.battleStats.defense / 2);
+
+		// Dexterity modifies damage
+		damage *= (1 + (this.battleStats.dexterity * 0.005));
+		damage *= Utilities.randomFloat(0.8, 1.2);
+
+		return damage;
+	}
+	public receiveDamage(args): number {
 		if (!args.reason) {
 			args.reason = "";
 		}
@@ -67,7 +147,36 @@ export default class BattleUnit extends Unit {
 		}
 
 		args.damage *= args.mult;
-		// TODO
+		args.damage /= (1 + (this.battleStats.dexterity * 0.001));
+
+		if (args.damage < 1) {
+			args.damage = 1;
+		}
+		args.damage = Math.floor(args.damage);
+
+		this.battleStats.hp -= args.damage;
+
+		this.incrementStats(StatGrowth.Action.receivedDamage);
+
+		const statDisplay = this.createStatDisplay("hp");
+		console.log(this.name + "receives " + args.damage + " damage " + args.reason + " " + statDisplay);
+
+		if (this.battleStats.hp <= 0) {
+			if (this.type === "hero") {
+				console.log(this.name + " is defeated");
+			} else if (this.type === "monster") {
+				console.log(this.name + " is defeated");
+			}
+			console.log(this.battle);
+			this.battle.unitDead(this);
+
+		}
+
+		if (this["gameStats"]) {
+			this["gameStats"].damagedReceived += args.damage;
+		}
+
+		return args.damage;
 	}
 
 	public removeStatusEffect(effect) {
@@ -75,6 +184,11 @@ export default class BattleUnit extends Unit {
 		// TODO
 		//this.battleStatusEffects[effect].removed(this);
 		//this.battleStatusEffects[effect] = null;
+	}
+
+	public incrementStats(statAmounts) {
+		// TODO
+		console.log(statAmounts);
 	}
 
 	public updateAfterBattle() {

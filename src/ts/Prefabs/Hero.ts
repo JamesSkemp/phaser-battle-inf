@@ -6,6 +6,8 @@ import Equipment from "./Equipment";
 import Utilities from "./Utilities";
 import Item from "./Item";
 import ItemGenProperties from "./ItemGenProperties";
+import Items from "../Data/Items";
+import Player from "./Player";
 
 export default class Hero extends BattleUnit {
 
@@ -17,6 +19,7 @@ export default class Hero extends BattleUnit {
 
 	public gameStats: GameStats = null;
 	public equipment: Equipment;
+	public equipmentList = [];
 
 	public actionsRoot;
 
@@ -44,19 +47,44 @@ export default class Hero extends BattleUnit {
 
 		this.actionsRoot = {type: "root", actions: [{type: "Select Target", targetType: "Opponent", select: "With Least", stat: "hp"}, {type: "Action", code: "Attack", target: "Selected Opponent"}]};
 		this.actionCode = "battle.selectTarget('Opponent', 'With Least', 'hp');if (battle.currentUnitPerformAction('Attack','Selected Opponent')) return;";
+
+		this.buildEquipmentList();
 	}
 
-	public setup(index: number) {
+	public setup(index: number, player: Player) {
 		this.index = index;
 
 		// Add starting equipment to the hero.
-		this.equip(new Item(new ItemGenProperties(1, 1, "hand", "SWORD")), true);
-		this.equip(new Item(new ItemGenProperties(1, 1, "body", "CHAIN")), true);
-		this.equip(new Item(new ItemGenProperties(1, 1, "legs", "CHAIN")), true);
+		this.equip(new Item(new ItemGenProperties(1, 1, "hand", "SWORD")), true, player);
+		this.equip(new Item(new ItemGenProperties(1, 1, "body", "CHAIN")), true, player);
+		this.equip(new Item(new ItemGenProperties(1, 1, "legs", "CHAIN")), true, player);
 	}
 
-	public equip(item: Item, keepInInventory: boolean) {
-		console.log(item);
+	public calculateStats() {
+		for (const statName of Object.keys(this.baseStats)) {
+			this.stats[statName] = this.baseStats[statName];
+		}
+
+		for (const slotKey of Object.keys(this.equipment)) {
+			const slot = this.equipment[slotKey];
+			if (Utilities.isArray(slot)) {
+				for (const item of slot) {
+					if (item !== null) {
+						for (const stat of Object.keys(item.stats)) {
+							this.stats[stat] += item.stats[stat];
+						}
+					}
+				}
+			} else if (slot !== null) {
+				const item = slot;
+				for (const stat of Object.keys(item.stats)) {
+					this.stats[stat] += item.stats[stat];
+				}
+			}
+		}
+	}
+
+	public equip(item: Item, keepInInventory: boolean, player: Player) {
 		if (item.level > this.level) {
 			// TODO
 			console.log("The item is too high a level for the hero to equip.");
@@ -64,30 +92,132 @@ export default class Hero extends BattleUnit {
 		}
 
 		if (Utilities.isArray(this.equipment[item.type])) {
-			// TODO
+			const slots = this.equipment[item.type];
+			const requiredSlots = Items[item.type][item.subType].slots;
+			let spaceFound = false;
+			let firstEmptySlot = -1;
+			let sequentialSlots = 0;
+
+			// Look for enough sequential slots
+			// i is incremented in the body
+			for (let i = 0; i < slots.length;) {
+				const slotItem = this.equipment[item.type][i];
+
+				if (slotItem === null) {
+					if (firstEmptySlot === -1) {
+						firstEmptySlot = i;
+					}
+
+					sequentialSlots++;
+					i++;
+				} else {
+					firstEmptySlot = -1;
+					sequentialSlots = 0;
+					i += Items[slotItem.type][slotItem.subType].slots;
+				}
+
+				if (sequentialSlots === requiredSlots) {
+
+					this.equipment[item.type][firstEmptySlot] = item;
+					spaceFound = true;
+					break;
+				}
+			}
+
+			// No space was found
+			if (!spaceFound) {
+				for (let i = 0; i < requiredSlots; i++) {
+					if (this.equipment[item.type][i] !== null) {
+						this.unequip(this.equipment[item.type][i], keepInInventory, player);
+					}
+				}
+				this.equipment[item.type][0] = item;
+			}
 		} else {
 			// Unequip the original item.
 			if (this.equipment[item.type] !== null) {
-				this.unequip(this.equipment[item.type], keepInInventory);
+				this.unequip(this.equipment[item.type], keepInInventory, player);
 			}
 
 			this.equipment[item.type] = item;
 		}
 
 		if (!keepInInventory) {
-			// TODO
+			player.removeItem(item);
 		}
 
-		// TODO
+		this.calculateStats();
+		this.buildEquipmentList();
 	}
 
-	public unequip(item: Item, keepInInventory: boolean) {
+	public unequip(item: Item, keepInventory: boolean, player) {
+		if (!keepInventory) {
+			player.addItem(item);
+		}
+
+		console.log("unequip");
+		console.log(this.equipment);
+		console.log(item);
 		// TODO
+		/*
+        for (var e in this.equipment)
+        {
+            var slot = this.equipment[e];
+            if (isArray(slot))
+            {
+                for (var j in slot)
+                    if (slot[j] === unequipItem)
+                        this.equipment[e][j] = null;
+            }
+            else if (slot !== null)
+            {
+                if (slot === unequipItem)
+                    this.equipment[e] = null;
+            }
+        }
+		*/
+
+		this.calculateStats();
+		this.buildEquipmentList();
 	}
 
 	public addExp(amount: number) {
 		this.exp += amount;
 		this.totalExp += amount;
 		this.gameStats.totalExp += amount;
+	}
+
+	public buildEquipmentList() {
+		this.equipmentList = [
+			{
+				displayName: "L-HAND"
+				, item: this.equipment.hand[0]
+			}
+			, {
+				displayName: "R-HAND"
+				, item: this.equipment.hand[1]
+			}
+			, {
+				displayName: "HEAD"
+				, item: this.equipment.head
+			}
+			, {
+				displayName: "BODY"
+				, item: this.equipment.body
+			}
+			, {
+				displayName: "HANDS"
+				, item: this.equipment.hands
+			}
+			, {
+				displayName: "LEGS"
+				, item: this.equipment.legs
+			}
+			, {
+				displayName: "FEET"
+				, item: this.equipment.feet
+			}
+		];
+		console.log(this.equipmentList);
 	}
 }

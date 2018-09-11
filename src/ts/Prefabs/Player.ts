@@ -98,7 +98,7 @@ export default class Player {
 
 	public createNewHero() {
 		const hero = new Hero();
-		hero.setup(this.heroes.length);
+		hero.setup(this.heroes.length, this);
 		this.heroes.push(Utilities.mergeObjects({}, hero));
 		// TODO switch to the following?
 		//this.heroes.push(hero);
