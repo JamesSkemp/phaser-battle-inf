@@ -119,11 +119,38 @@ export default class BattleUnit extends Unit {
 		console.log(this.name + " is defending");
 	}
 
-	public useSkillOn(skillName, unit) {
-		// TODO
-		console.log(arguments);
-	}
+	public useSkillOn(skillName, unit): boolean {
+		const skill = this.skills[skillName];
+		const spRequired = SkillTrees.ActiveSkills[skillName].sp;
 
+		if (this.battleStats.sp >= spRequired) {
+			this.battleStats.sp -= spRequired;
+
+			if (SkillTrees.ActiveSkills[skillName].magical) {
+				this.incrementStats(StatGrowth.Action.usedMagicalSkill);
+			} else {
+				this.incrementStats(StatGrowth.Action.usedSkill);
+			}
+
+			skill.fn = SkillTrees.ActiveSkills[skillName].fn; // Set the function for the skill
+
+			skill.uses++;
+
+			// TODO
+			console.log(this.name + " uses " + skillName + " on " + unit.name + " " + this.createStatDisplay("sp"));
+
+			skill.fn({
+				user: this
+				, skill
+				, target: unit
+				, battle: this.battle
+			});
+
+			return true;
+		} else {
+			return false;
+		}
+	}
 	public calculateBaseAttackDamageFor(unit) {
 		let damage = this.battleStats.attack - (unit.battleStats.defense / 2);
 
@@ -154,7 +181,7 @@ export default class BattleUnit extends Unit {
 		this.incrementStats(StatGrowth.Action.receivedDamage);
 
 		const statDisplay = this.createStatDisplay("hp");
-		console.log(this.name + "receives " + args.damage + " damage " + args.reason + " " + statDisplay);
+		console.log(this.name + " receives " + args.damage + " damage " + args.reason + " " + statDisplay);
 
 		if (this.battleStats.hp <= 0) {
 			if (this.type === "hero") {
@@ -162,7 +189,6 @@ export default class BattleUnit extends Unit {
 			} else if (this.type === "monster") {
 				console.log(this.name + " is defeated");
 			}
-			console.log(this.battle);
 			this.battle.unitDead(this);
 
 		}
@@ -174,16 +200,79 @@ export default class BattleUnit extends Unit {
 		return args.damage;
 	}
 
+	public addStatusEffect(statusEffect, turns, power) {
+		const effectName = statusEffect.id;
+
+		if (!this.battleStatusEffects[effectName]) {
+			this.battleStatusEffects[effectName] = {
+				name: effectName
+				, power
+				, totalTurns: turns
+				, turnsRemaining: turns
+				, added: statusEffect.added
+				, update: statusEffect.update
+				, removed: statusEffect.removed
+			};
+
+			this.battleStatusEffects[effectName].added(this);
+		}
+	}
+
 	public removeStatusEffect(effect) {
 		console.log(effect);
 		// TODO
-		//this.battleStatusEffects[effect].removed(this);
-		//this.battleStatusEffects[effect] = null;
+		this.battleStatusEffects[effect].removed(this);
+		this.battleStatusEffects[effect] = null;
+	}
+
+	public hasStatusEffect(effectName): boolean {
+		if (this.battleStatusEffects[effectName]) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public restoreStat(stat: string, amount: number): number {
+		this.battleStats[stat] += amount;
+		if (this.battleStats[stat] > this.battleStatsMax[stat]) {
+			amount = this.battleStatsMax[stat] - this.battleStats[stat];
+			this.battleStats[stat] = this.battleStatsMax[stat];
+		}
+
+		const statDisplay = this.createStatDisplay("hp");
+		// TODO
+		//player.log(this.name + " regained " + amount + " " + Utilities.statDisplayString(stat) + " " + statDisplay);
+		console.log(this.name + " regained " + amount + " " + Utilities.statDisplayString(stat) + " " + statDisplay);
+
+		return amount;
+	}
+
+	public knowsSkill(skillName: string): boolean {
+		// TODO needs to be reworked given my change
+		if (this.skills[skillName]) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public learnSkill(skillName: string) {
+		// TODO needs to be reworked given my change
+		if (!this.skills[skillName]) {
+			const skill = SkillTrees.ActiveSkills[skillName];
+
+			this.skills[skillName] = {
+				level: 1
+				, uses: 0
+			};
+		}
 	}
 
 	public incrementStats(statAmounts) {
-		// TODO
-		console.log(statAmounts);
+		for (const stat of Object.keys(statAmounts)) {
+			this.baseStats[stat] += statAmounts[stat] * (this.battle.level / this.level);
+		}
 	}
 
 	public updateAfterBattle() {
@@ -199,11 +288,14 @@ export default class BattleUnit extends Unit {
 			}
 		}
 
-		for (const skillName of this.skills) {
+		for (const unitSkill of this.skills) {
 			// TODO there's a better way to handle this; necessary given how I setup skills
-			console.log(skillName);
+			console.log(unitSkill);
 
-			// TODO
+			const skill = SkillTrees.ActiveSkills[unitSkill];
+			while (unitSkill.uses >= Utilities.getExpRequiredForSkillLevel(skill.baseExp, skill.growthRate, unitSkill.level)) {
+				unitSkill.level++;
+			}
 		}
 	}
 }

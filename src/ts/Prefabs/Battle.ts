@@ -114,11 +114,22 @@ export default class Battle extends BattleActions {
 	}
 
 	public checkStatusEffects(unit: BattleUnit) {
-		let effectsToRemove = [];
-		console.log(unit.battleStatusEffects);
+		const effectsToRemove = [];
+
+		// Check status effecs and reduce all by 1, remove those at 0
 		for (const statusEffect of unit.battleStatusEffects) {
 			// TODO
 			console.log(statusEffect);
+			if (statusEffect) {
+				if (statusEffect.turnsRemaining <= 0) {
+					effectsToRemove.push(statusEffect.name);
+					continue;
+				}
+
+				statusEffect.update(unit);
+
+				statusEffect.turnsRemaining--;
+			}
 		}
 
 		for (const effectToRemove of effectsToRemove) {

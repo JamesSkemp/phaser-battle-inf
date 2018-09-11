@@ -106,4 +106,35 @@ export default class BattleActions {
 
 		return null;
 	}
+
+	public targetStatComp(targetSelector, stat, comp: string, constant): boolean {
+		const target = this.getTargetFromSelector(targetSelector);
+
+		if (target !== null) {
+			let percent = target.battleStats[stat] / (target.battleStatsMax[stat] * 1.0);
+			percent = Math.round(percent * 100);
+			constant = parseInt(constant, 10);
+
+			switch (comp) {
+				case "<":
+					return percent < constant;
+					break;
+				case ">":
+					return percent > constant;
+					break;
+			}
+		}
+	}
+
+	public targetHasStatusEffect(targetSelector, effectName): boolean {
+		const target = this.getTargetFromSelector(targetSelector);
+
+		if (target !== null) {
+			if (target.battleStatusEffects[effectName]) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }
