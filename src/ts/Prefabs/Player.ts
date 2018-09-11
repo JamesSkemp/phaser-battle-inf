@@ -187,12 +187,33 @@ export default class Player {
 		}
 	}
 
+	/**
+	 * Compare item properties.
+	 * @param item 
+	 * @param prop Item property to look at.
+	 * @param comp Type of comparision to do, either >= or <=.
+	 * @param value 
+	 */
+	public itemComp(item: Item, prop: string, comp: string, value) {
+		const valueA = item[prop];
+		const valueB = value;
+
+		switch (comp) {
+			case ">=":
+				return valueA >= valueB;
+				break;
+			case "<=":
+				return valueA <= valueB;
+				break;
+		}
+	}
+
 	public addItem(item: Item) {
 		let result = "keep";
 
-		// TODO
-		//eval("itemFn = function(item) {" + this.inventoryActionCode + "}");
-		//itemFn(item);
+		let itemFn = function(item) { };
+		eval("itemFn = function(item) {" + this.inventoryActionCode + "}");
+		itemFn(item);
 
 		if (result === "sell" || this.inventory.length >= this.inventoryMax) {
 			// TODO take into account shop discount?
@@ -207,7 +228,36 @@ export default class Player {
 	}
 
 	public restockShopItems() {
-		// TODO
+		const armorTypes = ["body", "feet", "hands", "head", "legs"];
+
+		this.shopItems = [];
+
+		if (this.buildings["Armor Smith"]) {
+			const armorCostMod = 1 - Utilities.log10(this.buildings["Armor Smith"].length + 10) / 2 + 0.5;
+			const armorAmount = this.buildings["Armor Smith"].length < 50 ? this.buildings["Armor Smith"].length : 50;
+
+			// Create armor
+			for (let i = 0; i < armorAmount; i++) {
+				const type = armorTypes[Utilities.randomInt(0, armorTypes.length - 1)];
+				const building = this.buildings["Armor Smith"][i];
+				const item = new Item(new ItemGenProperties(building.level, null, type, null));
+				this.shopItems.push(item);
+			}
+		}
+
+		if (this.buildings["Weapon Smith"]) {
+			const weaponCostMod = 1 - Utilities.log10(this.buildings["Weapon Smith"].length + 10) / 2 + 0.5;
+			const weaponAmount = this.buildings["Weapon Smith"].length < 50 ? this.buildings["Weapon Smith"].length : 50;
+
+			// Create weapons
+			for (let i = 0; i < weaponAmount; i++) {
+				const building = this.buildings["Weapon Smith"][i];
+				const item = new Item(new ItemGenProperties(building.level, null, "hand", null));
+				this.shopItems.push(item);
+			}
+		}
+
+		// TODO add gem code
 	}
 
 	public startBattle() {
@@ -237,5 +287,79 @@ export default class Player {
 		this.battle.initBattle();
 
 		this.inBattle = true;
+	}
+
+	public battleDone() {
+		this.inBattle = false;
+
+		// Only award EXP, money, and land progress if the player won
+		if (this.battle.winningIndex === 0) {
+			this.log('<p class="emphasize yellow i_trophy">YOU WON</p>');
+
+			let totalLevels = 0;
+			for (const deadUnit of this.battle.parties[1].deadUnits) {
+				totalLevels += deadUnit.level;
+			}
+
+			const addMoney = totalLevels;
+			this.log("+" + addMoney + " money");
+			this.money += addMoney;
+
+			this.addLandProgress(this.battle.parties[1].deadUnits.length);
+
+			const addExp = Math.round(totalLevels);
+			for (const hero of this.battleHeroes) {
+				hero.addExp(addExp);
+				this.log( + hero.name + " +" + addExp + " exp");
+			}
+
+			const r = Utilities.randomInt(0, 100);
+			const chance = 20;
+
+			// Chance to get a random item of the battle level
+			if (r <= chance) {
+				const newItem = new Item(new ItemGenProperties(this.battle.level, null, null, null));
+				this.log("Found " + newItem.rarity + " " + newItem.name);
+				this.addItem(newItem);
+			}
+		} else {
+			this.log('<p class="emphasize yellow i_times">YOU LOST</p>');
+		}
+	}
+
+	public getMaxHeroLevel(): number {
+		let level = 0;
+		for (const hero of this.heroes) {
+			if (hero.level > level) {
+				level = hero.level;
+			}
+		}
+
+		return level;
+	}
+
+	public getActiveHeroCount(): number {
+		let count = 0;
+		for (const hero of this.heroes) {
+			if (!hero.reserve) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public addLandProgress(mult) {
+		const divisor = (this.landMax * (this.getMaxHeroLevel() / this.battle.level));
+		const min = 0.1 / divisor;
+		const max = 0.2 / divisor;
+		const progress = Utilities.randomFloat(min, max) * mult;
+
+		this.log("+" + (progress * 100).toFixed(2) + "% land progress");
+
+		this.landProgress += progress;
+		if (this.landProgress > 1) {
+			this.landProgress -= 1;
+			this.landMax += 1;
+		}
 	}
 }

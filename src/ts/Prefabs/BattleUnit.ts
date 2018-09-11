@@ -37,15 +37,12 @@ export default class BattleUnit extends Unit {
 	}
 
 	public initForBattle(battle) {
-		console.log("init for battle");
-		console.log(this);
-
 		this.battle = battle;
-		// TODO
+		// TODO?
 		this.battleStats = Utilities.mergeObjects({}, this.stats);
 		this.battleStats.floorStats();
 
-		// TODO
+		// TODO?
 		this.battleStatsMax = Utilities.mergeObjects({}, this.battleStats);
 		this.battleStatusEffects = [];
 	}
@@ -59,7 +56,6 @@ export default class BattleUnit extends Unit {
 
 	public willCriticalHit(): boolean {
 		const skill = this.skills["Critical Dodge"];
-		console.log(this.skills);
 		if (skill) {
 			skill.uses++;
 			if (Utilities.randomInt(0, 100) < skill.level) {
@@ -71,7 +67,6 @@ export default class BattleUnit extends Unit {
 
 	public willDodge() {
 		const skill = this.skills["Dodge"];
-		console.log(this.skills);
 		if (skill) {
 			skill.uses++;
 			if (Utilities.randomInt(0, 100) < skill.level) {
@@ -85,8 +80,8 @@ export default class BattleUnit extends Unit {
 
 		if (!supressAttackMessage) {
 			// TODO
-			console.log(this.name + " attacks " + unit.name);
 			//player.log('<b>' + this.name + '</b> attacks <b>' + unit.name + '</b>');
+			console.log(this.name + " attacks " + unit.name);
 		}
 
 		if (!dodged) {
