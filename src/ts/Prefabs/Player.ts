@@ -30,7 +30,7 @@ export default class Player {
 	public battleLevel = 1;
 
 	public heroMax = 8;
-	public heroes = [];
+	public heroes: Hero[] = [];
 	public monsters = [];
 	public battleHeroes = [];
 

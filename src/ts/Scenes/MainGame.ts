@@ -9,6 +9,8 @@ export default class MainGame extends Phaser.Scene {
 	public player: Player;
 
 	public consoleText: Phaser.GameObjects.Text;
+	public heroesText: Phaser.GameObjects.Text;
+	public monstersText: Phaser.GameObjects.Text;
 
 	public preload(): void {
 		// TODO?
@@ -39,14 +41,28 @@ export default class MainGame extends Phaser.Scene {
 			loop: true
 		});*/
 
+		// TODO remove this
 		window["GamePlayer"] = this.player;
 
 		const startBattleButton = this.add.text(25, this.cameras.main.height - 25, "Start Battle", { fill: "#fff" });
 		startBattleButton.setInteractive();
 		startBattleButton.on("pointerdown", () => { this.player.startBattle(); console.log(this.player); });
+
+		console.log(startBattleButton.style.fontSize);
+
+		this.heroesText = this.add.text(this.cameras.main.width / 4 + 25, this.cameras.main.height / 4 * 3, "", { fill: "#fff", fontSize: "14px" });
+
+		console.log(this.player.heroes);
 	}
 
 	public update(): void {
+		// TODO this needs to be moved elsewhere
 		this.consoleText.setText(this.player.battleLog.join("\n"));
+
+		let heroesData = "";
+		for (const hero of this.player.heroes) {
+			heroesData += hero.buildSimpleHeroDisplay();
+		}
+		this.heroesText.setText(heroesData);
 	}
 }

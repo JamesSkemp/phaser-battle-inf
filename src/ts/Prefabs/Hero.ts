@@ -188,6 +188,12 @@ export default class Hero extends BattleUnit {
 		this.gameStats.totalExp += amount;
 	}
 
+	public buildSimpleHeroDisplay() {
+		return this.name + " L" + this.level + "\n"
+			+ this.stats.hp + " " + Utilities.statDisplayString("hp") + " " + this.stats.sp + " " + Utilities.statDisplayString("sp") + " " + this.stats.attack + " " + Utilities.statDisplayString("attack") + " " + this.stats.defense + " " + Utilities.statDisplayString("defense") + " " + this.stats.dexterity + " " + Utilities.statDisplayString("dexterity") + " " + this.stats.magic + " " + Utilities.statDisplayString("magic") + "\n"
+			+ this.exp + "/" + Utilities.getExpRequiredForLevel(this.level) + "EXP\n";
+	}
+
 	public buildEquipmentList() {
 		this.equipmentList = [
 			{
