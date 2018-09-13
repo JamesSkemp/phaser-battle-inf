@@ -32,12 +32,12 @@ gulp.task("lint:ts", function() {
 
 gulp.task("copy-html", function () {
 	return gulp.src(paths.content, { base: "src" })
-		.pipe(gulp.dest('dist'));
+		.pipe(gulp.dest('public'));
 });
 
 gulp.task("copy-phaser", function () {
 	return gulp.src("./node_modules/phaser/dist/phaser.min.js")
-		.pipe(gulp.dest('dist/lib'));
+		.pipe(gulp.dest('public/lib'));
 });
 
 gulp.task("default2", ["copy-html", "copy-phaser"], function (cb) {
@@ -46,7 +46,7 @@ gulp.task("default2", ["copy-html", "copy-phaser"], function (cb) {
 		.pipe(sourcemaps.init())
 		.pipe(ts(tsProject()))
 		.pipe(sourcemaps.write())
-		.pipe(gulp.dest('dist'))
+		.pipe(gulp.dest('public'))
 		;
 	//concat('app.js'),
 	/*uglify({
@@ -81,5 +81,5 @@ gulp.task("default", ["copy-html", "copy-phaser"], function () {
 		.bundle()
 		.pipe(source('app.js'))
 		.pipe(buffer())
-		.pipe(gulp.dest('dist'));
+		.pipe(gulp.dest('public'));
 });

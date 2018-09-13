@@ -20,28 +20,28 @@ module.exports = {
 	},
 	output: {
 		filename: 'app.js',
-		path: path.resolve(__dirname, 'dist')
+		path: path.resolve(__dirname, 'public')
 	},
 	devtool: "source-map",
 	plugins: [
-		new CleanWebpackPlugin(['dist']),
+		new CleanWebpackPlugin(['public']),
 		new CopyWebpackPlugin([{
 			from: './node_modules/phaser/dist/phaser.min.js',
 			to: 'lib'
 		}]),
 		new CopyWebpackPlugin([{
 			from: './src/*.html',
-			to: path.resolve(__dirname, 'dist'),
+			to: path.resolve(__dirname, 'public'),
 			flatten: true
 		}]),
 		new CopyWebpackPlugin([{
 			from: './src/*.css',
-			to: path.resolve(__dirname, 'dist'),
+			to: path.resolve(__dirname, 'public'),
 			flatten: true
 		}]),
 		new CopyWebpackPlugin([{
 			from: './src/*.ico',
-			to: path.resolve(__dirname, 'dist'),
+			to: path.resolve(__dirname, 'public'),
 			flatten: true
 		}]),
 		new CopyWebpackPlugin([{
