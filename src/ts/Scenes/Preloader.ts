@@ -1,4 +1,4 @@
-import MainMenu from "./MainMenu";
+import SplashScreen from "./SplashScreen";
 
 export default class Preloader extends Phaser.Scene {
 	/**
@@ -20,7 +20,7 @@ export default class Preloader extends Phaser.Scene {
 	public create(): void {
 		console.log((new Date()).toISOString() + " : Entered Preloader create()");
 
-		this.scene.start(MainMenu.Name);
+		this.scene.start(SplashScreen.Name);
 	}
 
 	public update(): void {

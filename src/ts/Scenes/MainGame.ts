@@ -19,8 +19,6 @@ export default class MainGame extends Phaser.Scene {
 	public create(): void {
 		console.log((new Date()).toISOString() + " : Entered MainGame create()");
 
-		this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, "phaser_pixel_medium_flat");
-
 		this.consoleText = this.add.text(50, 50, "");
 		this.consoleText.setWordWrapWidth(this.cameras.main.width * .9);
 
