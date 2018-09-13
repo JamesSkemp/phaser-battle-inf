@@ -13,9 +13,13 @@ export default class SplashScreen extends Phaser.Scene {
 	public create(): void {
 		console.log((new Date()).toISOString() + " : Entered SplashScreen create()");
 
-		const phaserLogo = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, "phaser_pixel_medium_flat");
-		phaserLogo.setInteractive();
-		phaserLogo.on("pointerdown", this.loadMainMenu, this);
+		const poweredByText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY - 25, "Powered By");
+		poweredByText.setOrigin(0.5, 0.5);
+		poweredByText.setFontFamily("monospace").setFontSize(20).setFill("#fff");
+		this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, "phaser_pixel_medium_flat");
+
+		this.input.setDefaultCursor("pointer");
+		this.input.on("pointerdown", this.loadMainMenu, this);
 
 		this.time.addEvent({
 			// Run after three seconds.
