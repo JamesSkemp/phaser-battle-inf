@@ -301,8 +301,8 @@ export default class Player {
 		this.inBattle = false;
 
 		// Only award EXP, money, and land progress if the player won
-		if (this.battle.winningIndex === 0) {
-			this.log('<p class="emphasize yellow i_trophy">YOU WON</p>');
+		if (this.battle.winningIndex === 1) {
+			this.log("YOU WON");
 
 			let totalLevels = 0;
 			for (const deadUnit of this.battle.parties[1].deadUnits) {
@@ -318,7 +318,7 @@ export default class Player {
 			const addExp = Math.round(totalLevels);
 			for (const hero of this.battleHeroes) {
 				hero.addExp(addExp);
-				this.log( + hero.name + " +" + addExp + " exp");
+				this.log(hero.name + " +" + addExp + " exp");
 			}
 
 			const r = Utilities.randomInt(0, 100);
@@ -331,7 +331,7 @@ export default class Player {
 				this.addItem(newItem);
 			}
 		} else {
-			this.log('<p class="emphasize yellow i_times">YOU LOST</p>');
+			this.log("YOU LOST");
 		}
 	}
 

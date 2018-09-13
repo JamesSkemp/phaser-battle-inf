@@ -84,7 +84,7 @@ export default class Preloader extends Phaser.Scene {
 			assetText.setText("Loading asset: " + file.key);
 		});
 
-		this.load.on("complete",  () => {
+		this.load.on("complete", () => {
 			progressBar.destroy();
 			progressBox.destroy();
 			loadingText.destroy();

@@ -40,7 +40,7 @@ export default class BattleUnit extends Unit {
 		this.battle = battle;
 		// TODO?
 		this.battleStats = Utilities.mergeObjects({}, this.stats);
-		this.battleStats.floorStats();
+		this.floorBattleStats();
 
 		// TODO?
 		this.battleStatsMax = Utilities.mergeObjects({}, this.battleStats);
@@ -297,5 +297,17 @@ export default class BattleUnit extends Unit {
 				unitSkill.level++;
 			}
 		}
+	}
+
+	/**
+	 * Round all stats down.
+	 */
+	public floorBattleStats(): void {
+		this.battleStats.hp = Math.floor(this.battleStats.hp);
+		this.battleStats.sp = Math.floor(this.battleStats.sp);
+		this.battleStats.attack = Math.floor(this.battleStats.attack);
+		this.battleStats.defense = Math.floor(this.battleStats.defense);
+		this.battleStats.dexterity = Math.floor(this.battleStats.dexterity);
+		this.battleStats.magic = Math.floor(this.battleStats.magic);
 	}
 }

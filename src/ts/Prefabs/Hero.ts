@@ -190,7 +190,12 @@ export default class Hero extends BattleUnit {
 
 	public buildSimpleHeroDisplay() {
 		return this.name + " L" + this.level + "\n"
-			+ this.stats.hp + " " + Utilities.statDisplayString("hp") + " " + this.stats.sp + " " + Utilities.statDisplayString("sp") + " " + this.stats.attack + " " + Utilities.statDisplayString("attack") + " " + this.stats.defense + " " + Utilities.statDisplayString("defense") + " " + this.stats.dexterity + " " + Utilities.statDisplayString("dexterity") + " " + this.stats.magic + " " + Utilities.statDisplayString("magic") + "\n"
+			+ this.stats.hp.toFixed(0) + " " + Utilities.statDisplayString("hp")
+			+ " " + this.stats.sp.toFixed(0) + " " + Utilities.statDisplayString("sp")
+			+ " " + this.stats.attack.toFixed(0) + " " + Utilities.statDisplayString("attack")
+			+ " " + this.stats.defense.toFixed(0) + " " + Utilities.statDisplayString("defense")
+			+ " " + this.stats.dexterity.toFixed(0) + " " + Utilities.statDisplayString("dexterity")
+			+ " " + this.stats.magic.toFixed(0) + " " + Utilities.statDisplayString("magic") + "\n"
 			+ this.exp + "/" + Utilities.getExpRequiredForLevel(this.level) + " EXP\n";
 	}
 

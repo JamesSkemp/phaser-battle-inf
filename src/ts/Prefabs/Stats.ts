@@ -28,16 +28,4 @@ export default class Stats {
 		this.dexterity = 0;
 		this.magic = 0;
 	}
-
-	/**
-	 * Round all stats down.
-	 */
-	public floorStats() {
-		this.hp = Math.floor(this.hp);
-		this.sp = Math.floor(this.sp);
-		this.attack = Math.floor(this.attack);
-		this.defense = Math.floor(this.defense);
-		this.dexterity = Math.floor(this.dexterity);
-		this.magic = Math.floor(this.magic);
-	}
 }

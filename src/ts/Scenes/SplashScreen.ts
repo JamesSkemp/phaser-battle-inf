@@ -13,6 +13,10 @@ export default class SplashScreen extends Phaser.Scene {
 	public create(): void {
 		console.log((new Date()).toISOString() + " : Entered SplashScreen create()");
 
+		const titleText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY * 0.5, "Battle INF: Phaser Edition")
+			.setOrigin(0.5, 0)
+			.setFontFamily("monospace").setFontSize(30).setFill("#fff");
+
 		const poweredByText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY - 25, "Powered By");
 		poweredByText.setOrigin(0.5, 0.5);
 		poweredByText.setFontFamily("monospace").setFontSize(20).setFill("#fff");
