@@ -97,6 +97,9 @@ export default class Player {
 	}
 
 	public createNewHero() {
+		if (this.heroes.length >= this.heroMax) {
+			return;
+		}
 		const hero = new Hero();
 		hero.setup(this.heroes.length, this);
 		this.heroes.push(Utilities.mergeObjects({}, hero));

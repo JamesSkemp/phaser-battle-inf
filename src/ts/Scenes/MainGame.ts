@@ -84,9 +84,9 @@ export default class MainGame extends Phaser.Scene {
 	}
 
 	private setupTopBar(): void {
-		this.add.text(0, 0, "Battle INF: Phaser Edition")
+		this.add.text(5, 0, "Battle INF: Phaser Edition")
 		.setFontFamily("monospace").setFontSize(20).setFill("#fff");
-		this.topBarText = this.add.text(0, 20, "")
+		this.topBarText = this.add.text(10, 20, "")
 			.setFontFamily("monospace").setFontSize(16).setFill("#fff");
 		this.updateTopBar();
 	}
@@ -99,18 +99,24 @@ export default class MainGame extends Phaser.Scene {
 	}
 
 	private setupHeroDisplay(): void {
-		const heroTextStyling = { fill: "#fff", fontSize: "14px" };
+		const heroTextStyling = { cursor: "help", fill: "#fff", fontSize: "14px", width: this.cameras.main.centerX - 25 };
 		const heroRowHeight = 60;
 		// First column of heroes.
-		this.hero0Text = this.add.text(25, 50, "", heroTextStyling);
-		this.hero1Text = this.add.text(25, 50 + heroRowHeight, "", heroTextStyling);
-		this.hero2Text = this.add.text(25, 50 + (heroRowHeight * 2), "", heroTextStyling);
-		this.hero3Text = this.add.text(25, 50 + (heroRowHeight * 3), "", heroTextStyling);
+		this.hero0Text = this.add.text(25, 50, " ", heroTextStyling);
+		this.hero1Text = this.add.text(25, 50 + heroRowHeight, " ", heroTextStyling);
+		this.hero2Text = this.add.text(25, 50 + (heroRowHeight * 2), " ", heroTextStyling);
+		this.hero3Text = this.add.text(25, 50 + (heroRowHeight * 3), " ", heroTextStyling);
 		// Second column of heroes.
-		this.hero4Text = this.add.text(this.cameras.main.width / 2 + 25, 50, "", heroTextStyling);
-		this.hero5Text = this.add.text(this.cameras.main.width / 2 + 25, 50 + heroRowHeight, "", heroTextStyling);
-		this.hero6Text = this.add.text(this.cameras.main.width / 2 + 25, 50 + (heroRowHeight * 2), "", heroTextStyling);
-		this.hero7Text = this.add.text(this.cameras.main.width / 2 + 25, 50 + (heroRowHeight * 3), "", heroTextStyling);
+		this.hero4Text = this.add.text(this.cameras.main.width / 2 + 25, 50, " ", heroTextStyling);
+		this.hero5Text = this.add.text(this.cameras.main.width / 2 + 25, 50 + heroRowHeight, " ", heroTextStyling);
+		this.hero6Text = this.add.text(this.cameras.main.width / 2 + 25, 50 + (heroRowHeight * 2), " ", heroTextStyling);
+		this.hero7Text = this.add.text(this.cameras.main.width / 2 + 25, 50 + (heroRowHeight * 3), " ", heroTextStyling);
+
+		for (let i = 0; i < 8; i++) {
+			const textBox: Phaser.GameObjects.Text = this["hero" + i + "Text"];
+			textBox.setInteractive();
+			textBox.on("pointerdown", () => { this.viewHeroData(i); }, this);
+		}
 
 		this.updateHeroDisplay();
 	}
@@ -118,10 +124,21 @@ export default class MainGame extends Phaser.Scene {
 	private updateHeroDisplay(): void {
 		for (let i = 0; i < this.player.heroes.length; i++) {
 			const hero = this.player.heroes[i];
-			this["hero" + i + "Text"].setText(hero.buildSimpleHeroDisplay());
+			const heroText: Phaser.GameObjects.Text = this["hero" + i + "Text"];
+			heroText.setText(hero.buildSimpleHeroDisplay()).setInteractive();
+			// Update the hitArea after updating the text so they can be clicked.
+			heroText.input.hitArea.setSize(this.cameras.main.width / 2 - 25, 60);
+
 			if (hero.reserve || hero.trainingAreaIndex >= 0) {
-				this["hero" + i + "Text"].setFill("#999");
+				heroText.setFill("#999");
 			}
+		}
+	}
+
+	private viewHeroData(heroPosition: number) {
+		console.log(heroPosition);
+		if (this.player.heroes[heroPosition] !== null) {
+			console.log(this.player.heroes[heroPosition]);
 		}
 	}
 
@@ -178,7 +195,7 @@ export default class MainGame extends Phaser.Scene {
 		let dataLoaded = false;
 		this.player = new Player();
 
-		const saveDataString = localStorage.getItem('save_player');
+		const saveDataString = localStorage.getItem("save_player");
 
 		if (saveDataString !== null) {
 			this.player = Utilities.mergeObjects(this.player, saveDataString);
