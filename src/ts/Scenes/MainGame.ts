@@ -13,7 +13,6 @@ export default class MainGame extends Phaser.Scene {
 	 * Text at the top of the display that shows information about current money, heroes, and land.
 	 */
 	public topBarText: Phaser.GameObjects.Text;
-	public consoleText: Phaser.GameObjects.Text;
 	public hero0Text: Phaser.GameObjects.Text;
 	public hero1Text: Phaser.GameObjects.Text;
 	public hero2Text: Phaser.GameObjects.Text;
@@ -22,6 +21,8 @@ export default class MainGame extends Phaser.Scene {
 	public hero5Text: Phaser.GameObjects.Text;
 	public hero6Text: Phaser.GameObjects.Text;
 	public hero7Text: Phaser.GameObjects.Text;
+	public infoAreaText: Phaser.GameObjects.Text;
+	// TODO remove?
 	public monstersText: Phaser.GameObjects.Text;
 
 	public preload(): void {
@@ -30,9 +31,6 @@ export default class MainGame extends Phaser.Scene {
 
 	public create(): void {
 		console.log((new Date()).toISOString() + " : Entered MainGame create()");
-
-		this.consoleText = this.add.text(50, this.cameras.main.centerY, "");
-		this.consoleText.setWordWrapWidth(this.cameras.main.width * .9);
 
 		this.player = new Player();
 
@@ -67,20 +65,17 @@ export default class MainGame extends Phaser.Scene {
 		// TODO remove this
 		window["GamePlayer"] = this.player;
 
-		const startBattleButton = this.add.text(this.cameras.main.width - 10, 10, "Start Battle", { fill: "#fff" })
-			.setOrigin(1, 0);
-		startBattleButton.setInteractive();
-		startBattleButton.on("pointerdown", () => { this.player.startBattle(); console.log(this.player); });
-
 		console.log(this.player.heroes);
 
 		this.setupTopBar();
 		this.setupHeroDisplay();
+		this.setupButtons();
+		this.setupInfoBox();
 	}
 
 	public update(): void {
 		// TODO this needs to be moved elsewhere
-		this.consoleText.setText(this.player.battleLog.join("\n"));
+		//this.infoAreaText.setText(this.player.battleLog.join("\n"));
 	}
 
 	private setupTopBar(): void {
@@ -140,6 +135,82 @@ export default class MainGame extends Phaser.Scene {
 		if (this.player.heroes[heroPosition] !== null) {
 			console.log(this.player.heroes[heroPosition]);
 		}
+	}
+
+	private setupButtons() {
+		const startBattleButton = this.add.text(this.cameras.main.width - 10, 10, "Start Battle", { fill: "#fff" })
+			.setOrigin(1, 0);
+		startBattleButton.setInteractive();
+		startBattleButton.on("pointerdown", () => { this.player.startBattle(); console.log(this.player); });
+
+		const buttonStyling = { fill: "#fff" };
+
+		let buttonNumber = 0;
+		const battleButton = this.add.text(5, this.cameras.main.centerY + 30 * buttonNumber, "Battle", buttonStyling);
+		battleButton.setInteractive();
+		battleButton.on("pointerdown", this.viewBattle, this);
+		battleButton.setSize(100, 25);
+		buttonNumber++;
+
+		const upgradesButton = this.add.text(5, this.cameras.main.centerY + 30 * buttonNumber, "Upgrades", buttonStyling);
+		upgradesButton.setInteractive();
+		upgradesButton.on("pointerdown", this.viewUpgrades, this);
+		upgradesButton.setSize(100, 25);
+		buttonNumber++;
+
+		const inventoryButton = this.add.text(5, this.cameras.main.centerY + 30 * buttonNumber, "Inventory", buttonStyling);
+		inventoryButton.setInteractive();
+		inventoryButton.on("pointerdown", this.viewInventory, this);
+		inventoryButton.setSize(100, 25);
+		buttonNumber++;
+
+		const townButton = this.add.text(5, this.cameras.main.centerY + 30 * buttonNumber, "Town", buttonStyling);
+		townButton.setInteractive();
+		townButton.on("pointerdown", this.viewTown, this);
+		townButton.setSize(100, 25);
+		buttonNumber++;
+
+		const shopButton = this.add.text(5, this.cameras.main.centerY + 30 * buttonNumber, "Shop", buttonStyling);
+		shopButton.setInteractive();
+		shopButton.on("pointerdown", this.viewShop, this);
+		shopButton.setSize(100, 25);
+		buttonNumber++;
+
+		const optionsButton = this.add.text(5, this.cameras.main.centerY + 30 * buttonNumber, "Options", buttonStyling);
+		optionsButton.setInteractive();
+		optionsButton.on("pointerdown", this.viewOptions, this);
+		optionsButton.setSize(100, 25);
+		buttonNumber++;
+	}
+
+	private viewBattle() {
+		this.infoAreaText.setText("Battle");
+	}
+
+	private viewUpgrades() {
+		this.infoAreaText.setText("Upgrades");
+	}
+
+	private viewInventory() {
+		this.infoAreaText.setText("Inventory");
+	}
+
+	private viewTown() {
+		this.infoAreaText.setText("Town");
+	}
+
+	private viewShop() {
+		this.infoAreaText.setText("Shop");
+	}
+
+	private viewOptions() {
+		this.infoAreaText.setText("Options");
+	}
+
+	private setupInfoBox() {
+		const leftSideSpacing = 125;
+		this.infoAreaText = this.add.text(leftSideSpacing, this.cameras.main.centerY, "");
+		this.infoAreaText.setWordWrapWidth((this.cameras.main.width - leftSideSpacing) * .9);
 	}
 
 	private activityCheck(): void {
