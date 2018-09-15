@@ -33,12 +33,8 @@ export default class MainGame extends Phaser.Scene {
 		console.log((new Date()).toISOString() + " : Entered MainGame create()");
 
 		this.player = new Player();
-
 		this.player.addInitialLogMessages();
-
 		this.player.initNewPlayer();
-
-		console.log(this.player);
 
 		// Add a main timer that runs every second.
 		this.time.addEvent({
@@ -65,8 +61,6 @@ export default class MainGame extends Phaser.Scene {
 		// TODO remove this
 		window["GamePlayer"] = this.player;
 
-		console.log(this.player.heroes);
-
 		this.setupTopBar();
 		this.setupHeroDisplay();
 		this.setupButtons();
@@ -74,8 +68,7 @@ export default class MainGame extends Phaser.Scene {
 	}
 
 	public update(): void {
-		// TODO this needs to be moved elsewhere
-		//this.infoAreaText.setText(this.player.battleLog.join("\n"));
+		// TODO?
 	}
 
 	private setupTopBar(): void {
@@ -133,7 +126,15 @@ export default class MainGame extends Phaser.Scene {
 	private viewHeroData(heroPosition: number) {
 		console.log(heroPosition);
 		if (this.player.heroes[heroPosition] !== null) {
-			console.log(this.player.heroes[heroPosition]);
+			const hero = this.player.heroes[heroPosition];
+			let heroContent = hero.buildSimpleHeroDisplay();
+			for (const equipment of hero.equipmentList) {
+				// TODO fix item display
+				heroContent += "\n" + equipment.display();
+			}
+
+			this.infoAreaText.setText(heroContent);
+			console.log(hero);
 		}
 	}
 
@@ -184,7 +185,7 @@ export default class MainGame extends Phaser.Scene {
 	}
 
 	private viewBattle() {
-		this.infoAreaText.setText("Battle");
+		this.infoAreaText.setText("Battle\n" + this.player.battleLog.reverse().join("\n"));
 	}
 
 	private viewUpgrades() {

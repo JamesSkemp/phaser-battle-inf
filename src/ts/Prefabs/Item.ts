@@ -106,4 +106,8 @@ export default class Item {
 		}
 		*/
 	}
+
+	public display(): string {
+		return "Lv" + this.level + " " + this.name;
+	}
 }

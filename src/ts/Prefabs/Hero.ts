@@ -8,6 +8,7 @@ import Item from "./Item";
 import ItemGenProperties from "./ItemGenProperties";
 import Items from "../Data/Items";
 import Player from "./Player";
+import EquippedItem from "./EquippedItem";
 
 export default class Hero extends BattleUnit {
 
@@ -19,7 +20,7 @@ export default class Hero extends BattleUnit {
 
 	public gameStats: GameStats = null;
 	public equipment: Equipment;
-	public equipmentList = [];
+	public equipmentList: EquippedItem[] = [];
 
 	public actionsRoot;
 
@@ -202,34 +203,13 @@ export default class Hero extends BattleUnit {
 
 	public buildEquipmentList() {
 		this.equipmentList = [
-			{
-				displayName: "L-HAND"
-				, item: this.equipment.hand[0]
-			}
-			, {
-				displayName: "R-HAND"
-				, item: this.equipment.hand[1]
-			}
-			, {
-				displayName: "HEAD"
-				, item: this.equipment.head
-			}
-			, {
-				displayName: "BODY"
-				, item: this.equipment.body
-			}
-			, {
-				displayName: "HANDS"
-				, item: this.equipment.hands
-			}
-			, {
-				displayName: "LEGS"
-				, item: this.equipment.legs
-			}
-			, {
-				displayName: "FEET"
-				, item: this.equipment.feet
-			}
+			new EquippedItem("L-HAND", this.equipment.hand[0]),
+			new EquippedItem("R-HAND", this.equipment.hand[1]),
+			new EquippedItem("HEAD", this.equipment.head),
+			new EquippedItem("BODY", this.equipment.body),
+			new EquippedItem("HANDS", this.equipment.hands),
+			new EquippedItem("LEGS", this.equipment.legs),
+			new EquippedItem("FEET", this.equipment.feet),
 		];
 	}
 }
