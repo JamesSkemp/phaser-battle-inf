@@ -1,5 +1,11 @@
 import Player from "../Prefabs/Player";
 import Utilities from "../Prefabs/Utilities";
+import OptionsScene from "./OptionsScene";
+import BattleScene from "./BattleScene";
+import UpgradesScene from "./UpgradesScene";
+import InventoryScene from "./InventoryScene";
+import TownScene from "./TownScene";
+import ShopScene from "./ShopScene";
 
 export default class MainGame extends Phaser.Scene {
 	/**
@@ -185,33 +191,48 @@ export default class MainGame extends Phaser.Scene {
 	}
 
 	private viewBattle() {
-		this.infoAreaText.setText("Battle\n" + this.player.battleLog.reverse().join("\n"));
+		this.infoAreaText.setText("");
+		this.scene.bringToTop(BattleScene.Name);
 	}
 
 	private viewUpgrades() {
-		this.infoAreaText.setText("Upgrades");
+		this.infoAreaText.setText("");
+		this.scene.bringToTop(UpgradesScene.Name);
 	}
 
 	private viewInventory() {
-		this.infoAreaText.setText("Inventory");
+		this.infoAreaText.setText("");
+		this.scene.bringToTop(InventoryScene.Name);
 	}
 
 	private viewTown() {
-		this.infoAreaText.setText("Town");
+		this.infoAreaText.setText("");
+		this.scene.bringToTop(TownScene.Name);
 	}
 
 	private viewShop() {
-		this.infoAreaText.setText("Shop");
+		this.infoAreaText.setText("");
+		this.scene.bringToTop(ShopScene.Name);
 	}
 
 	private viewOptions() {
-		this.infoAreaText.setText("Options");
+		this.infoAreaText.setText("");
+		this.scene.bringToTop(OptionsScene.Name);
 	}
 
 	private setupInfoBox() {
 		const leftSideSpacing = 125;
 		this.infoAreaText = this.add.text(leftSideSpacing, this.cameras.main.centerY, "");
 		this.infoAreaText.setWordWrapWidth((this.cameras.main.width - leftSideSpacing) * .9);
+
+		this.scene.launch(BattleScene.Name);
+		this.scene.launch(UpgradesScene.Name);
+		this.scene.launch(InventoryScene.Name);
+		this.scene.launch(TownScene.Name);
+		this.scene.launch(ShopScene.Name);
+		this.scene.launch(OptionsScene.Name);
+
+		this.scene.bringToTop(BattleScene.Name);
 	}
 
 	private activityCheck(): void {

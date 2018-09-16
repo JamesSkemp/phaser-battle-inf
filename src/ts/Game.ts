@@ -3,6 +3,12 @@ import Preloader from "./Scenes/Preloader";
 import MainMenu from "./Scenes/MainMenu";
 import MainGame from "./Scenes/MainGame";
 import SplashScreen from "./Scenes/SplashScreen";
+import OptionsScene from "./Scenes/OptionsScene";
+import BattleScene from "./Scenes/BattleScene";
+import UpgradesScene from "./Scenes/UpgradesScene";
+import InventoryScene from "./Scenes/InventoryScene";
+import TownScene from "./Scenes/TownScene";
+import ShopScene from "./Scenes/ShopScene";
 
 const gameConfig: GameConfig = {
 	width: 800,
@@ -23,6 +29,12 @@ export default class Game extends Phaser.Game {
 		this.scene.add(SplashScreen.Name, SplashScreen);
 		this.scene.add(MainMenu.Name, MainMenu);
 		this.scene.add(MainGame.Name, MainGame);
+		this.scene.add(BattleScene.Name, BattleScene);
+		this.scene.add(UpgradesScene.Name, UpgradesScene);
+		this.scene.add(InventoryScene.Name, InventoryScene);
+		this.scene.add(TownScene.Name, TownScene);
+		this.scene.add(ShopScene.Name, ShopScene);
+		this.scene.add(OptionsScene.Name, OptionsScene);
 		this.scene.start(Boot.Name);
 	}
 }
