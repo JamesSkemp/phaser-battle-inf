@@ -52,7 +52,7 @@ export default class MainGame extends Phaser.Scene {
 		// Add a timer that should run every minute.
 		this.time.addEvent({
 			delay: 60000,
-			callback: this.doMinuteActivities,
+			callback: this.doOneMinuteActivities,
 			callbackScope: this,
 			loop: true
 		});
@@ -261,9 +261,14 @@ export default class MainGame extends Phaser.Scene {
 	/**
 	 * Do anything that should be done once a minute.
 	 */
-	private doMinuteActivities(): void {
+	private doOneMinuteActivities(): void {
 		console.log((new Date().toISOString()) +  " One minute activities running.");
 		this.player.money += this.player.gpm;
+
+		if (this.player.autoSave) {
+			const dataSaved = this.savePlayer();
+			console.log("Data saved: " + dataSaved);
+		}
 	}
 
 	/**
@@ -271,16 +276,14 @@ export default class MainGame extends Phaser.Scene {
 	 */
 	private doFiveMinuteActivities(): void {
 		console.log((new Date().toISOString()) +  " Five minute activities running.");
-		if (this.player.autoSave) {
-			console.log("Data saved: " + this.savePlayer());
-		}
 	}
 
 	private savePlayer(): boolean {
-		const savedPlayer = Utilities.mergeObjects({}, this.player);
+		const savedPlayer: Player = Utilities.mergeObjects({}, this.player);
 		savedPlayer.prepareForSave();
 
-		localStorage.setItem("save_player", savedPlayer);
+		localStorage.setItem("save_player", JSON.stringify(savedPlayer));
+		console.log(JSON.stringify(savedPlayer));
 		return true;
 	}
 
@@ -288,7 +291,7 @@ export default class MainGame extends Phaser.Scene {
 		let dataLoaded = false;
 		this.player = new Player();
 
-		const saveDataString = localStorage.getItem("save_player");
+		const saveDataString = JSON.parse(localStorage.getItem("save_player"));
 
 		if (saveDataString !== null) {
 			this.player = Utilities.mergeObjects(this.player, saveDataString);
