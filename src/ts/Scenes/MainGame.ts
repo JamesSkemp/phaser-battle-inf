@@ -6,6 +6,7 @@ import UpgradesScene from "./UpgradesScene";
 import InventoryScene from "./InventoryScene";
 import TownScene from "./TownScene";
 import ShopScene from "./ShopScene";
+import HeroDisplayScene from "./HeroDisplayScene";
 
 export default class MainGame extends Phaser.Scene {
 	/**
@@ -133,14 +134,10 @@ export default class MainGame extends Phaser.Scene {
 		console.log(heroPosition);
 		if (this.player.heroes[heroPosition] !== null) {
 			const hero = this.player.heroes[heroPosition];
-			let heroContent = hero.buildSimpleHeroDisplay();
-			for (const equipment of hero.equipmentList) {
-				// TODO fix item display
-				heroContent += "\n" + equipment.display();
-			}
 
-			this.infoAreaText.setText(heroContent);
-			console.log(hero);
+			const heroDisplay = this.scene.get(HeroDisplayScene.Name) as HeroDisplayScene;
+			heroDisplay.updateDisplay(heroPosition);
+			this.scene.bringToTop(HeroDisplayScene.Name);
 		}
 	}
 
@@ -231,6 +228,7 @@ export default class MainGame extends Phaser.Scene {
 		this.scene.launch(TownScene.Name);
 		this.scene.launch(ShopScene.Name);
 		this.scene.launch(OptionsScene.Name);
+		this.scene.launch(HeroDisplayScene.Name);
 
 		this.scene.bringToTop(BattleScene.Name);
 	}

@@ -9,6 +9,7 @@ import UpgradesScene from "./Scenes/UpgradesScene";
 import InventoryScene from "./Scenes/InventoryScene";
 import TownScene from "./Scenes/TownScene";
 import ShopScene from "./Scenes/ShopScene";
+import HeroDisplayScene from "./Scenes/HeroDisplayScene";
 
 const gameConfig: GameConfig = {
 	width: 800,
@@ -35,6 +36,7 @@ export default class Game extends Phaser.Game {
 		this.scene.add(TownScene.Name, TownScene);
 		this.scene.add(ShopScene.Name, ShopScene);
 		this.scene.add(OptionsScene.Name, OptionsScene);
+		this.scene.add(HeroDisplayScene.Name, HeroDisplayScene);
 		this.scene.start(Boot.Name);
 	}
 }
