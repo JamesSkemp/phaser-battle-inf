@@ -50,6 +50,7 @@ export default class Player {
 	public unlock: PlayerUnlocks;
 
 	public constructor() {
+		this.unlock = new PlayerUnlocks();
 		// TODO
 	}
 
@@ -79,7 +80,6 @@ export default class Player {
 	}
 
 	public initNewPlayer() {
-		this.unlock = new PlayerUnlocks();
 		this.createNewHero();
 		this.heroes[0].reserve = false;
 
