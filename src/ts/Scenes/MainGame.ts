@@ -78,6 +78,46 @@ export default class MainGame extends Phaser.Scene {
 		// TODO?
 	}
 
+	public savePlayer(): boolean {
+		const savedPlayer: Player = Utilities.mergeObjects(new Player(), this.player);
+		savedPlayer.prepareForSave();
+
+		localStorage.setItem("save_player", JSON.stringify(savedPlayer));
+		console.log(JSON.stringify(savedPlayer));
+		return true;
+	}
+
+	public loadPlayer(): boolean {
+		let dataLoaded = false;
+		this.player = new Player();
+
+		const saveDataString = JSON.parse(localStorage.getItem("save_player"));
+
+		if (saveDataString !== null) {
+			this.player = Utilities.mergeObjects(this.player, saveDataString);
+			this.player.loadHeroes();
+			//this.player.loadPlayer(saveDataString);
+			dataLoaded = true;
+		} else {
+			// TODO ?
+			this.player.addInitialLogMessages();
+			this.player.initNewPlayer();
+		}
+
+		// Reset the shop refresh time each page load
+		const date = new Date();
+		this.player.lastShopRefreshTimestamp = date.getTime();
+
+		if (this.player.lastTrainingCheckTimestamp === 0) {
+			this.player.lastTrainingCheckTimestamp = date.getTime();
+		}
+
+		// TODO
+		//updateShopRestockTimer();
+
+		return dataLoaded;
+	}
+
 	private setupTopBar(): void {
 		this.add.text(5, 0, "Battle INF: Phaser Edition")
 		.setFontFamily("monospace").setFontSize(20).setFill("#fff");
@@ -274,43 +314,5 @@ export default class MainGame extends Phaser.Scene {
 	 */
 	private doFiveMinuteActivities(): void {
 		console.log((new Date().toISOString()) +  " Five minute activities running.");
-	}
-
-	private savePlayer(): boolean {
-		const savedPlayer: Player = Utilities.mergeObjects({}, this.player);
-		savedPlayer.prepareForSave();
-
-		localStorage.setItem("save_player", JSON.stringify(savedPlayer));
-		console.log(JSON.stringify(savedPlayer));
-		return true;
-	}
-
-	private loadPlayer(): boolean {
-		let dataLoaded = false;
-		this.player = new Player();
-
-		const saveDataString = JSON.parse(localStorage.getItem("save_player"));
-
-		if (saveDataString !== null) {
-			this.player = Utilities.mergeObjects(this.player, saveDataString);
-
-			this.player.loadHeroes();
-			dataLoaded = true;
-		} else {
-			// TODO
-		}
-
-		// Reset the shop refresh time each page load
-		const date = new Date();
-		this.player.lastShopRefreshTimestamp = date.getTime();
-
-		if (this.player.lastTrainingCheckTimestamp === 0) {
-			this.player.lastTrainingCheckTimestamp = date.getTime();
-		}
-
-		// TODO
-		//updateShopRestockTimer();
-
-		return dataLoaded;
 	}
 }

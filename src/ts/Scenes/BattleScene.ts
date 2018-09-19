@@ -6,6 +6,7 @@ export default class BattleScene extends Phaser.Scene {
 	 */
 	public static Name: string = "BattleScene";
 	public sceneText: Phaser.GameObjects.Text;
+	private mainGameScene: MainGame;
 
 	constructor(handle) {
 		super(handle);
@@ -19,6 +20,8 @@ export default class BattleScene extends Phaser.Scene {
 		const background = this.add.graphics();
 		background.fillStyle(0x000000);
 		background.fillRect(leftSideSpacing, topSpacing, this.cameras.main.width, this.cameras.main.height);
+
+		this.mainGameScene = this.scene.get(MainGame.Name) as MainGame;
 
 		this.add.text(leftSideSpacing, topSpacing, "Battle").setFontFamily("monospace").setFontSize(20).setFill("#fff");
 
