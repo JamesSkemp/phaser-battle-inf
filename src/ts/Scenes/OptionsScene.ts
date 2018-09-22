@@ -1,4 +1,5 @@
 import MainGame from "./MainGame";
+import Styling from "../Prefabs/Styling";
 
 export default class OptionsScene extends Phaser.Scene {
 	/**
@@ -6,6 +7,7 @@ export default class OptionsScene extends Phaser.Scene {
 	 */
 	public static Name: string = "OptionsScene";
 	private mainGameScene: MainGame;
+	private autoSaveStatusText: Phaser.GameObjects.Text;
 
 	constructor(handle) {
 		super(handle);
@@ -24,11 +26,7 @@ export default class OptionsScene extends Phaser.Scene {
 
 		this.add.text(leftSideSpacing, topSpacing, "Options").setFontFamily("monospace").setFontSize(20).setFill("#fff");
 
-		const buttonStyling = {
-			fill: "#fff",
-			fontFamily: "monospace",
-			fontSize: "20px"
-		};
+		const buttonStyling = Styling.actionButtonStyling();
 
 		// Save button.
 		const saveButton = this.add.text(leftSideSpacing + 25, topSpacing + 50, "Save the game", buttonStyling);
@@ -42,5 +40,16 @@ export default class OptionsScene extends Phaser.Scene {
 
 		// Reset button.
 		// TODO
+
+		// Auto-save toggle.
+		const autoSaveToggleButton = this.add.text(leftSideSpacing + 25, topSpacing + 150, "Auto save (1 minute)", buttonStyling);
+		autoSaveToggleButton.setInteractive();
+		autoSaveToggleButton.on("pointerdown", this.toggleAutoSave, this);
+		this.autoSaveStatusText = this.add.text(leftSideSpacing + 25, topSpacing + 150 + 25, (this.mainGameScene.player.autoSave ? "Enabled" : "Disabled"));
+	}
+
+	private toggleAutoSave() {
+		this.mainGameScene.player.autoSave = !this.mainGameScene.player.autoSave;
+		this.autoSaveStatusText.setText(this.mainGameScene.player.autoSave ? "Enabled" : "Disabled");
 	}
 }
