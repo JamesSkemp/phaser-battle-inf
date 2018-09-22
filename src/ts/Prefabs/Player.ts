@@ -217,8 +217,7 @@ export default class Player {
 		itemFn(item);
 
 		if (result === "sell" || this.inventory.length >= this.inventoryMax) {
-			// TODO take into account shop discount?
-			this.money += Math.floor(item.moneyValue * 0.4);
+			this.addMoneyFromItemSale(item);
 		} else if (this.inventory.length < this.inventoryMax) {
 			this.inventory.push(item);
 		}
@@ -226,6 +225,11 @@ export default class Player {
 
 	public removeItem(item: Item) {
 		this.inventory.splice(this.inventory.indexOf(item), 1);
+	}
+
+	public sellItem(item: Item) {
+		this.removeItem(item);
+		this.addMoneyFromItemSale(item);
 	}
 
 	public restockShopItems() {
@@ -419,5 +423,14 @@ export default class Player {
 			const hero = new Hero();
 			savedHero = Utilities.mergeObjects(hero, savedHero);
 		}
+		console.log(this.heroes);
+	}
+
+	/**
+	 * Give the player money for selling an item.
+	 * @param item Item to sell.
+	 */
+	private addMoneyFromItemSale(item: Item) {
+		this.money += item.sellPrice();
 	}
 }

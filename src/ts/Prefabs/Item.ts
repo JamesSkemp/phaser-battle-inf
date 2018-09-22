@@ -110,4 +110,12 @@ export default class Item {
 	public display(): string {
 		return "Lv" + this.level + " " + this.name;
 	}
+
+	/**
+	 * Returns the money received if this item is sold.
+	 */
+	public sellPrice(): number {
+		// TODO should shop levels have an impact on this?
+		return Math.round(this.moneyValue * 0.4);
+	}
 }
