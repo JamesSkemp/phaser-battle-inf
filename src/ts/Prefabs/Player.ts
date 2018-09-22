@@ -336,6 +336,11 @@ export default class Player {
 		} else {
 			this.log("YOU LOST");
 		}
+
+		if (!this.unlock.endlessMode) {
+			// Unlock endless mode after the first battle is done.
+			this.unlock.endlessMode = true;
+		}
 	}
 
 	public updateHeroStats() {
