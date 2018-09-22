@@ -7,6 +7,7 @@ import InventoryScene from "./InventoryScene";
 import TownScene from "./TownScene";
 import ShopScene from "./ShopScene";
 import HeroDisplayScene from "./HeroDisplayScene";
+import TrainingScene from "./TrainingScene";
 
 export default class MainGame extends Phaser.Scene {
 	/**
@@ -220,6 +221,12 @@ export default class MainGame extends Phaser.Scene {
 		shopButton.setSize(100, 25);
 		buttonNumber++;
 
+		const trainingButton = this.add.text(5, this.cameras.main.centerY + 30 * buttonNumber, "Training", buttonStyling);
+		trainingButton.setInteractive();
+		trainingButton.on("pointerdown", this.viewTraining, this);
+		trainingButton.setSize(100, 25);
+		buttonNumber++;
+
 		const optionsButton = this.add.text(5, this.cameras.main.centerY + 30 * buttonNumber, "Options", buttonStyling);
 		optionsButton.setInteractive();
 		optionsButton.on("pointerdown", this.viewOptions, this);
@@ -252,6 +259,11 @@ export default class MainGame extends Phaser.Scene {
 		this.scene.bringToTop(ShopScene.Name);
 	}
 
+	private viewTraining() {
+		this.infoAreaText.setText("");
+		this.scene.bringToTop(TrainingScene.Name);
+	}
+
 	private viewOptions() {
 		this.infoAreaText.setText("");
 		this.scene.bringToTop(OptionsScene.Name);
@@ -267,6 +279,7 @@ export default class MainGame extends Phaser.Scene {
 		this.scene.launch(InventoryScene.Name);
 		this.scene.launch(TownScene.Name);
 		this.scene.launch(ShopScene.Name);
+		this.scene.launch(TrainingScene.Name);
 		this.scene.launch(OptionsScene.Name);
 		this.scene.launch(HeroDisplayScene.Name);
 
