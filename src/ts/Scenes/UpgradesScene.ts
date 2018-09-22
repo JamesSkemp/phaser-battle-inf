@@ -36,6 +36,8 @@ export default class UpgradesScene extends Phaser.Scene {
 		inventoryButton.setInteractive();
 		inventoryButton.on("pointerdown", this.upgradeInventory, this);
 		this.inventoryUpgradeText = this.add.text(leftSideSpacing + 25 + 25, topSpacing + 50 + 25 + 50 * buttonNumber, "");
+		this.inventoryUpgradeText.setInteractive();
+		this.inventoryUpgradeText.on("pointerdown", this.upgradeInventory, this);
 		this.updateInventoryUpgradeText();
 		buttonNumber++;
 
@@ -44,6 +46,8 @@ export default class UpgradesScene extends Phaser.Scene {
 		heroesButton.setInteractive();
 		heroesButton.on("pointerdown", this.upgradeHeroes, this);
 		this.heroesUpgradeText = this.add.text(leftSideSpacing + 25 + 25, topSpacing + 50 + 25 + 100 * buttonNumber, "");
+		this.heroesUpgradeText.setInteractive();
+		this.heroesUpgradeText.on("pointerdown", this.upgradeHeroes, this);
 		this.updateHeroesUpgradeText();
 		buttonNumber++;
 	}
@@ -52,12 +56,14 @@ export default class UpgradesScene extends Phaser.Scene {
 		const upgrade = Upgrades.Options["Inventory Space"];
 		const player = this.mainGameScene.player;
 		this.inventoryUpgradeText.setText(upgrade.description + "\nCost: " + upgrade.nextValueCostFunction(player));
+		this.inventoryUpgradeText.input.hitArea.setSize(this.inventoryUpgradeText.width, this.inventoryUpgradeText.width);
 	}
 
 	private updateHeroesUpgradeText() {
 		const upgrade = Upgrades.Options.Heroes;
 		const player = this.mainGameScene.player;
 		this.heroesUpgradeText.setText(upgrade.description + "\nCost: " + upgrade.nextValueCostFunction(player));
+		this.heroesUpgradeText.input.hitArea.setSize(this.heroesUpgradeText.width, this.heroesUpgradeText.width);
 	}
 
 	private upgradeInventory() {
