@@ -1,10 +1,10 @@
 import Player from "../Prefabs/Player";
 
 export default class Upgrades {
-	public Options = [
-		{
+	public static Options = {
+		"Inventory Space": {
 			name: "Inventory Space"
-			, description: "Increase your inventory space by 5"
+			, description: "Increase your inventory space by 5."
 			, maxValue: 100
 			, currentValue(player: Player) {
 				return player.inventoryMax;
@@ -19,9 +19,9 @@ export default class Upgrades {
 				player.inventoryMax = this.nextValueFunction(player);
 			}
 		}
-		, {
+		, "Heroes": {
 			name: "Heroes"
-			, description: "Recruit an additional hero"
+			, description: "Recruit an additional hero."
 			, maxValue: 8
 			, currentValue(player: Player) {
 				return player.heroes.length;
@@ -36,5 +36,5 @@ export default class Upgrades {
 				player.createNewHero();
 			}
 		}
-	];
+	};
 }
