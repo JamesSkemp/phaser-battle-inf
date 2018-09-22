@@ -303,6 +303,8 @@ export default class MainGame extends Phaser.Scene {
 					this.player.log("You now have access to your hero's equipment. Go check it out.");
 				}
 			}
+		} else if (this.player.battle === null && !this.player.paused && this.player.endless) {
+			this.player.startBattle();
 		}
 
 		this.updateTopBar();
