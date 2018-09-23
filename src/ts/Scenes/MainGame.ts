@@ -249,12 +249,7 @@ export default class MainGame extends Phaser.Scene {
 		const sceneToStart = BattleScene.Name;
 		this.infoAreaText.setText("");
 		if (this.uiSceneRunning !== sceneToStart) {
-			if (this.uiSceneRunning !== "") {
-				this.scene.get(this.uiSceneRunning).scene.sleep();
-			}
-			this.scene.get(sceneToStart).scene.start();
-			this.scene.bringToTop(sceneToStart);
-			this.uiSceneRunning = sceneToStart;
+			this.sleepPreviousParallelScene(sceneToStart);
 		}
 	}
 
@@ -262,10 +257,7 @@ export default class MainGame extends Phaser.Scene {
 		const sceneToStart = UpgradesScene.Name;
 		this.infoAreaText.setText("");
 		if (this.uiSceneRunning !== sceneToStart) {
-			this.scene.get(this.uiSceneRunning).scene.sleep();
-			this.scene.get(sceneToStart).scene.start();
-			this.scene.bringToTop(sceneToStart);
-			this.uiSceneRunning = sceneToStart;
+			this.sleepPreviousParallelScene(sceneToStart);
 		}
 	}
 
@@ -273,10 +265,7 @@ export default class MainGame extends Phaser.Scene {
 		const sceneToStart = InventoryScene.Name;
 		this.infoAreaText.setText("");
 		if (this.uiSceneRunning !== sceneToStart) {
-			this.scene.get(this.uiSceneRunning).scene.sleep();
-			this.scene.get(sceneToStart).scene.start();
-			this.scene.bringToTop(sceneToStart);
-			this.uiSceneRunning = sceneToStart;
+			this.sleepPreviousParallelScene(sceneToStart);
 		}
 	}
 
@@ -284,10 +273,7 @@ export default class MainGame extends Phaser.Scene {
 		const sceneToStart = TownScene.Name;
 		this.infoAreaText.setText("");
 		if (this.uiSceneRunning !== sceneToStart) {
-			this.scene.get(this.uiSceneRunning).scene.sleep();
-			this.scene.get(sceneToStart).scene.start();
-			this.scene.bringToTop(sceneToStart);
-			this.uiSceneRunning = sceneToStart;
+			this.sleepPreviousParallelScene(sceneToStart);
 		}
 	}
 
@@ -295,10 +281,7 @@ export default class MainGame extends Phaser.Scene {
 		const sceneToStart = ShopScene.Name;
 		this.infoAreaText.setText("");
 		if (this.uiSceneRunning !== sceneToStart) {
-			this.scene.get(this.uiSceneRunning).scene.sleep();
-			this.scene.get(sceneToStart).scene.start();
-			this.scene.bringToTop(sceneToStart);
-			this.uiSceneRunning = sceneToStart;
+			this.sleepPreviousParallelScene(sceneToStart);
 		}
 	}
 
@@ -306,10 +289,7 @@ export default class MainGame extends Phaser.Scene {
 		const sceneToStart = TrainingScene.Name;
 		this.infoAreaText.setText("");
 		if (this.uiSceneRunning !== sceneToStart) {
-			this.scene.get(this.uiSceneRunning).scene.sleep();
-			this.scene.get(sceneToStart).scene.start();
-			this.scene.bringToTop(sceneToStart);
-			this.uiSceneRunning = sceneToStart;
+			this.sleepPreviousParallelScene(sceneToStart);
 		}
 	}
 
@@ -317,10 +297,24 @@ export default class MainGame extends Phaser.Scene {
 		const sceneToStart = OptionsScene.Name;
 		this.infoAreaText.setText("");
 		if (this.uiSceneRunning !== sceneToStart) {
-			this.scene.get(this.uiSceneRunning).scene.sleep();
-			this.scene.get(sceneToStart).scene.start();
+			this.sleepPreviousParallelScene(sceneToStart);
+		}
+	}
+
+	private sleepPreviousParallelScene(sceneToStart: string): Phaser.Scene {
+		if (this.uiSceneRunning !== sceneToStart) {
+			// Make sure that we properly handle the initial state, when no scene is set as running yet.
+			if (this.uiSceneRunning !== "") {
+				this.scene.get(this.uiSceneRunning).scene.sleep();
+			}
+			const newScene = this.scene.get(sceneToStart);
+			newScene.scene.start();
 			this.scene.bringToTop(sceneToStart);
 			this.uiSceneRunning = sceneToStart;
+
+			return newScene;
+		} else {
+			return this.scene.get(this.uiSceneRunning);
 		}
 	}
 
