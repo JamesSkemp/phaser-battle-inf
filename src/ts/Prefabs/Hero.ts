@@ -61,6 +61,37 @@ export default class Hero extends BattleUnit {
 		this.equip(new Item(new ItemGenProperties(1, 1, "legs", "CHAIN")), true, player);
 	}
 
+	public load(savedHero: Hero) {
+		for (const key of Object.keys(savedHero)) {
+			if (key === "equipment") {
+				for (const equipArea of Object.keys(savedHero.equipment)) {
+					if (equipArea === "hand") {
+						for (const savedItem of savedHero.equipment[equipArea]) {
+							if (savedItem !== null) {
+								const savedItemProperties = new ItemGenProperties(savedItem.level, savedItem.rarity, savedItem.type, savedItem.subType);
+
+								const item = new Item(savedItemProperties);
+								item.load(savedItem);
+								this.equip(item, true, null);
+							}
+						}
+					} else {
+						const savedItem = savedHero.equipment[equipArea];
+						if (savedItem !== null) {
+							const savedItemProperties = new ItemGenProperties(savedItem.level, savedItem.rarity, savedItem.type, savedItem.subType);
+
+							const item = new Item(savedItemProperties);
+							item.load(savedItem);
+							this.equip(item, true, null);
+						}
+					}
+				}
+				continue;
+			}
+			this[key] = savedHero[key];
+		}
+	}
+
 	public calculateStats() {
 		for (const statName of Object.keys(this.baseStats)) {
 			this.stats[statName] = this.baseStats[statName];
@@ -143,7 +174,7 @@ export default class Hero extends BattleUnit {
 			this.equipment[item.type] = item;
 		}
 
-		if (!keepInInventory) {
+		if (!keepInInventory && player !== null) {
 			player.removeItem(item);
 		}
 

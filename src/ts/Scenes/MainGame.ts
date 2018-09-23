@@ -47,8 +47,7 @@ export default class MainGame extends Phaser.Scene {
 		console.log((new Date()).toISOString() + " : Entered MainGame create()");
 
 		this.player = new Player();
-		this.player.addInitialLogMessages();
-		this.player.initNewPlayer();
+		this.loadPlayer();
 
 		// Add a main timer that runs every second.
 		this.time.addEvent({
@@ -90,7 +89,6 @@ export default class MainGame extends Phaser.Scene {
 		savedPlayer.prepareForSave();
 
 		localStorage.setItem("save_player", JSON.stringify(savedPlayer));
-		console.log(JSON.stringify(savedPlayer));
 		return true;
 	}
 
@@ -98,12 +96,10 @@ export default class MainGame extends Phaser.Scene {
 		let dataLoaded = false;
 		this.player = new Player();
 
-		const saveDataString = JSON.parse(localStorage.getItem("save_player"));
+		const saveDataString: Player = JSON.parse(localStorage.getItem("save_player"));
 
 		if (saveDataString !== null) {
-			this.player = Utilities.mergeObjects(this.player, saveDataString);
-			this.player.loadHeroes();
-			//this.player.loadPlayer(saveDataString);
+			this.player.loadPlayer(saveDataString);
 			dataLoaded = true;
 		} else {
 			// TODO ?
@@ -189,7 +185,7 @@ export default class MainGame extends Phaser.Scene {
 		const startBattleButton = this.add.text(this.cameras.main.width - 10, 10, "Start Battle", { fill: "#fff" })
 			.setOrigin(1, 0);
 		startBattleButton.setInteractive();
-		startBattleButton.on("pointerdown", () => { this.player.startBattle(); console.log(this.player); });
+		startBattleButton.on("pointerdown", () => { this.player.startBattle(); });
 
 		const buttonStyling = { fill: "#fff" };
 
@@ -345,7 +341,6 @@ export default class MainGame extends Phaser.Scene {
 
 		if (this.player.autoSave) {
 			const dataSaved = this.savePlayer();
-			console.log("Data saved: " + dataSaved);
 		}
 	}
 

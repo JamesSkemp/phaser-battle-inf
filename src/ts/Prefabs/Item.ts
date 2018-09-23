@@ -107,6 +107,19 @@ export default class Item {
 		*/
 	}
 
+	public load(savedItem: Item) {
+		for (const key of Object.keys(savedItem)) {
+			if (key === "stats") {
+				this.stats = new Stats();
+				for (const statName of Object.keys(this.stats)) {
+					this.stats[statName] = savedItem.stats[statName];
+				}
+				continue;
+			}
+			this[key] = savedItem[key];
+		}
+	}
+
 	public display(): string {
 		return "Lv" + this.level + " " + this.name;
 	}

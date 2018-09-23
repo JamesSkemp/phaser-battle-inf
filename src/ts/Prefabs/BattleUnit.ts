@@ -40,11 +40,11 @@ export default class BattleUnit extends Unit {
 	public initForBattle(battle) {
 		this.battle = battle;
 		// TODO?
-		this.battleStats = Utilities.mergeObjects({}, this.stats);
+		this.battleStats = Utilities.mergeObjects(new Stats(), this.stats);
 		this.floorBattleStats();
 
 		// TODO?
-		this.battleStatsMax = Utilities.mergeObjects({}, this.battleStats);
+		this.battleStatsMax = Utilities.mergeObjects(new Stats(), this.battleStats);
 		this.battleStatusEffects = [];
 	}
 

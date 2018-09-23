@@ -6,6 +6,7 @@ import Buildings from "../Data/Buildings";
 import Item from "./Item";
 import ItemGenProperties from "./ItemGenProperties";
 import Battle from "./Battle";
+import Stats from "./Stats";
 
 export default class Player {
 
@@ -102,7 +103,7 @@ export default class Player {
 		}
 		const hero = new Hero();
 		hero.setup(this.heroes.length, this);
-		this.heroes.push(Utilities.mergeObjects({}, hero));
+		this.heroes.push(hero);
 	}
 
 	public createMonsterParty(max) {
@@ -349,7 +350,7 @@ export default class Player {
 
 	public updateHeroStats() {
 		for (const hero of this.heroes) {
-			const oldStats = Utilities.mergeObjects({}, hero.stats);
+			const oldStats = Utilities.mergeObjects(new Stats(), hero.stats);
 			hero.calculateStats();
 
 			const statChanges = [];
@@ -415,15 +416,37 @@ export default class Player {
 		}
 	}
 
-	/**
-	 * Create new hero objects when data is loaded from storage.
-	 */
-	public loadHeroes() {
-		for (let savedHero of this.heroes) {
-			const hero = new Hero();
-			savedHero = Utilities.mergeObjects(hero, savedHero);
+	public loadPlayer(savedPlayer: Player) {
+		for (const key of Object.keys(savedPlayer)) {
+			if (key === "heroes" || key === "inventory") {
+				// We'll handle these keys later.
+				continue;
+			}
+			this[key] = savedPlayer[key];
 		}
-		console.log(this.heroes);
+		this.loadHeroes(savedPlayer.heroes);
+		this.loadInventory(savedPlayer.inventory);
+	}
+
+	/**
+	 * Add new hero objects when data is loaded from storage.
+	 */
+	public loadHeroes(savedHeroes) {
+		for (const savedHero of savedHeroes) {
+			const hero = new Hero();
+			hero.load(savedHero);
+			this.heroes.push(hero);
+		}
+	}
+
+	public loadInventory(savedInventory: Item[]) {
+		for (const savedItem of savedInventory) {
+			const savedItemProperties = new ItemGenProperties(savedItem.level, savedItem.rarity, savedItem.type, savedItem.subType);
+
+			const item = new Item(savedItemProperties);
+			item.load(savedItem);
+			this.addItem(item);
+		}
 	}
 
 	/**
