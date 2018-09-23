@@ -33,6 +33,12 @@ export default class MainGame extends Phaser.Scene {
 	// TODO remove?
 	public monstersText: Phaser.GameObjects.Text;
 
+	/**
+	 * Scenes to be include as sub-UI within the game.
+	 */
+	private uiScenes = [BattleScene.Name, UpgradesScene.Name, InventoryScene.Name, TownScene.Name, ShopScene.Name, TrainingScene.Name, OptionsScene.Name, HeroDisplayScene.Name];
+	private uiSceneRunning: string = "";
+
 	public preload(): void {
 		// TODO?
 	}
@@ -176,9 +182,14 @@ export default class MainGame extends Phaser.Scene {
 		if (this.player.heroes[heroPosition] !== null) {
 			const hero = this.player.heroes[heroPosition];
 
-			const heroDisplay = this.scene.get(HeroDisplayScene.Name) as HeroDisplayScene;
-			heroDisplay.updateDisplay(heroPosition);
-			this.scene.bringToTop(HeroDisplayScene.Name);
+			const sceneToStart = HeroDisplayScene.Name;
+			if (this.uiSceneRunning !== sceneToStart) {
+				const heroDisplay = this.scene.get(sceneToStart) as HeroDisplayScene;
+				heroDisplay.scene.start();
+				heroDisplay.updateDisplay(heroPosition);
+				this.scene.bringToTop(sceneToStart);
+				this.uiSceneRunning = sceneToStart;
+			}
 		}
 	}
 
@@ -235,39 +246,82 @@ export default class MainGame extends Phaser.Scene {
 	}
 
 	private viewBattle() {
+		const sceneToStart = BattleScene.Name;
 		this.infoAreaText.setText("");
-		this.scene.bringToTop(BattleScene.Name);
-		(this.scene.get(BattleScene.Name) as BattleScene).updateText();
+		if (this.uiSceneRunning !== sceneToStart) {
+			if (this.uiSceneRunning !== "") {
+				this.scene.get(this.uiSceneRunning).scene.sleep();
+			}
+			this.scene.get(sceneToStart).scene.start();
+			this.scene.bringToTop(sceneToStart);
+			this.uiSceneRunning = sceneToStart;
+		}
 	}
 
 	private viewUpgrades() {
+		const sceneToStart = UpgradesScene.Name;
 		this.infoAreaText.setText("");
-		this.scene.bringToTop(UpgradesScene.Name);
+		if (this.uiSceneRunning !== sceneToStart) {
+			this.scene.get(this.uiSceneRunning).scene.sleep();
+			this.scene.get(sceneToStart).scene.start();
+			this.scene.bringToTop(sceneToStart);
+			this.uiSceneRunning = sceneToStart;
+		}
 	}
 
 	private viewInventory() {
+		const sceneToStart = InventoryScene.Name;
 		this.infoAreaText.setText("");
-		this.scene.bringToTop(InventoryScene.Name);
+		if (this.uiSceneRunning !== sceneToStart) {
+			this.scene.get(this.uiSceneRunning).scene.sleep();
+			this.scene.get(sceneToStart).scene.start();
+			this.scene.bringToTop(sceneToStart);
+			this.uiSceneRunning = sceneToStart;
+		}
 	}
 
 	private viewTown() {
+		const sceneToStart = TownScene.Name;
 		this.infoAreaText.setText("");
-		this.scene.bringToTop(TownScene.Name);
+		if (this.uiSceneRunning !== sceneToStart) {
+			this.scene.get(this.uiSceneRunning).scene.sleep();
+			this.scene.get(sceneToStart).scene.start();
+			this.scene.bringToTop(sceneToStart);
+			this.uiSceneRunning = sceneToStart;
+		}
 	}
 
 	private viewShop() {
+		const sceneToStart = ShopScene.Name;
 		this.infoAreaText.setText("");
-		this.scene.bringToTop(ShopScene.Name);
+		if (this.uiSceneRunning !== sceneToStart) {
+			this.scene.get(this.uiSceneRunning).scene.sleep();
+			this.scene.get(sceneToStart).scene.start();
+			this.scene.bringToTop(sceneToStart);
+			this.uiSceneRunning = sceneToStart;
+		}
 	}
 
 	private viewTraining() {
+		const sceneToStart = TrainingScene.Name;
 		this.infoAreaText.setText("");
-		this.scene.bringToTop(TrainingScene.Name);
+		if (this.uiSceneRunning !== sceneToStart) {
+			this.scene.get(this.uiSceneRunning).scene.sleep();
+			this.scene.get(sceneToStart).scene.start();
+			this.scene.bringToTop(sceneToStart);
+			this.uiSceneRunning = sceneToStart;
+		}
 	}
 
 	private viewOptions() {
+		const sceneToStart = OptionsScene.Name;
 		this.infoAreaText.setText("");
-		this.scene.bringToTop(OptionsScene.Name);
+		if (this.uiSceneRunning !== sceneToStart) {
+			this.scene.get(this.uiSceneRunning).scene.sleep();
+			this.scene.get(sceneToStart).scene.start();
+			this.scene.bringToTop(sceneToStart);
+			this.uiSceneRunning = sceneToStart;
+		}
 	}
 
 	private setupInfoBox() {
@@ -275,16 +329,14 @@ export default class MainGame extends Phaser.Scene {
 		this.infoAreaText = this.add.text(leftSideSpacing, this.cameras.main.centerY, "");
 		this.infoAreaText.setWordWrapWidth((this.cameras.main.width - leftSideSpacing) * .9);
 
-		this.scene.launch(BattleScene.Name);
-		this.scene.launch(UpgradesScene.Name);
-		this.scene.launch(InventoryScene.Name);
-		this.scene.launch(TownScene.Name);
-		this.scene.launch(ShopScene.Name);
-		this.scene.launch(TrainingScene.Name);
-		this.scene.launch(OptionsScene.Name);
-		this.scene.launch(HeroDisplayScene.Name);
+		for (const uiScene of this.uiScenes) {
+			this.scene.launch(uiScene);
+			this.scene.get(uiScene).scene.sleep();
+		}
 
-		this.scene.bringToTop(BattleScene.Name);
+		//this.uiSceneRunning = BattleScene.Name;
+		//this.scene.bringToTop(this.uiSceneRunning).resume();
+		this.viewBattle();
 	}
 
 	private activityCheck(): void {
