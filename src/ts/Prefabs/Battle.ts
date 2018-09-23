@@ -1,6 +1,7 @@
 import BattleActions from "./BattleActions";
 import Party from "./Party";
 import BattleUnit from "./BattleUnit";
+import Player from "./Player";
 
 export default class Battle extends BattleActions {
 	// Won't be necessary once mergeObjects is refactored.
@@ -15,8 +16,9 @@ export default class Battle extends BattleActions {
 	public level: number = 0;
 	public done = false;
 	public winningIndex = 0;
+	private player: Player;
 
-	public constructor() {
+	public constructor(player: Player) {
 		super();
 		this.parties = [];
 		this.allUnits = [];
@@ -24,6 +26,7 @@ export default class Battle extends BattleActions {
 		this.level = 0;
 		this.done = false;
 		this.winningIndex = 0;
+		this.player = player;
 	}
 
 	public addParty(units) {
@@ -51,15 +54,15 @@ export default class Battle extends BattleActions {
 			unit.actScore = unit.battleStats.dexterity;
 		}
 
-		console.log("Battle Started");
+		this.player.log("Battle Started");
 	}
 
 	public nextTurn() {
 		this.allUnits.sort(this.unitSorter);
 		// TODO remove
-		console.log("After sorting");
+		this.player.log("After sorting");
 		for (const unit of this.allUnits) {
-			console.log(unit.name + " : " + unit.actScore);
+			this.player.log(unit.name + " : " + unit.actScore);
 		}
 
 		const performingUnit = this.allUnits[0];
@@ -85,9 +88,9 @@ export default class Battle extends BattleActions {
 		}
 
 		// TODO remove
-		console.log("After actScore changing");
+		this.player.log("After actScore changing");
 		for (const unit of this.allUnits) {
-			console.log(unit.name + " : " + unit.actScore);
+			this.player.log(unit.name + " : " + unit.actScore);
 		}
 
 		if (this.done) {
@@ -138,7 +141,7 @@ export default class Battle extends BattleActions {
 	}
 
 	public finalizeBattle() {
-		console.log("Battle Over");
+		this.player.log("Battle Over");
 
 		for (const party of this.parties) {
 			for (const livingUnit of party.livingUnits) {

@@ -289,7 +289,7 @@ export default class Player {
 
 		this.createMonsterParty(this.battleHeroes.length);
 
-		this.battle = new Battle();
+		this.battle = new Battle(this);
 		this.battle.addParty(this.battleHeroes);
 		this.battle.addParty(this.monsters);
 
