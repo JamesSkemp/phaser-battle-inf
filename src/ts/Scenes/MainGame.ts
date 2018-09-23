@@ -183,13 +183,8 @@ export default class MainGame extends Phaser.Scene {
 			const hero = this.player.heroes[heroPosition];
 
 			const sceneToStart = HeroDisplayScene.Name;
-			if (this.uiSceneRunning !== sceneToStart) {
-				const heroDisplay = this.scene.get(sceneToStart) as HeroDisplayScene;
-				heroDisplay.scene.start();
-				heroDisplay.updateDisplay(heroPosition);
-				this.scene.bringToTop(sceneToStart);
-				this.uiSceneRunning = sceneToStart;
-			}
+			const heroDisplay = this.sleepPreviousParallelScene(sceneToStart) as HeroDisplayScene;
+			heroDisplay.updateDisplay(heroPosition);
 		}
 	}
 
@@ -248,57 +243,43 @@ export default class MainGame extends Phaser.Scene {
 	private viewBattle() {
 		const sceneToStart = BattleScene.Name;
 		this.infoAreaText.setText("");
-		if (this.uiSceneRunning !== sceneToStart) {
-			this.sleepPreviousParallelScene(sceneToStart);
-		}
+		this.sleepPreviousParallelScene(sceneToStart);
 	}
 
 	private viewUpgrades() {
 		const sceneToStart = UpgradesScene.Name;
 		this.infoAreaText.setText("");
-		if (this.uiSceneRunning !== sceneToStart) {
-			this.sleepPreviousParallelScene(sceneToStart);
-		}
+		this.sleepPreviousParallelScene(sceneToStart);
 	}
 
 	private viewInventory() {
 		const sceneToStart = InventoryScene.Name;
 		this.infoAreaText.setText("");
-		if (this.uiSceneRunning !== sceneToStart) {
-			this.sleepPreviousParallelScene(sceneToStart);
-		}
+		this.sleepPreviousParallelScene(sceneToStart);
 	}
 
 	private viewTown() {
 		const sceneToStart = TownScene.Name;
 		this.infoAreaText.setText("");
-		if (this.uiSceneRunning !== sceneToStart) {
-			this.sleepPreviousParallelScene(sceneToStart);
-		}
+		this.sleepPreviousParallelScene(sceneToStart);
 	}
 
 	private viewShop() {
 		const sceneToStart = ShopScene.Name;
 		this.infoAreaText.setText("");
-		if (this.uiSceneRunning !== sceneToStart) {
-			this.sleepPreviousParallelScene(sceneToStart);
-		}
+		this.sleepPreviousParallelScene(sceneToStart);
 	}
 
 	private viewTraining() {
 		const sceneToStart = TrainingScene.Name;
 		this.infoAreaText.setText("");
-		if (this.uiSceneRunning !== sceneToStart) {
-			this.sleepPreviousParallelScene(sceneToStart);
-		}
+		this.sleepPreviousParallelScene(sceneToStart);
 	}
 
 	private viewOptions() {
 		const sceneToStart = OptionsScene.Name;
 		this.infoAreaText.setText("");
-		if (this.uiSceneRunning !== sceneToStart) {
-			this.sleepPreviousParallelScene(sceneToStart);
-		}
+		this.sleepPreviousParallelScene(sceneToStart);
 	}
 
 	private sleepPreviousParallelScene(sceneToStart: string): Phaser.Scene {

@@ -25,7 +25,7 @@ export default class HeroDisplayScene extends Phaser.Scene {
 
 		this.mainGameScene = this.scene.get(MainGame.Name) as MainGame;
 
-		this.add.text(leftSideSpacing, topSpacing, this.mainGameScene.player.heroes[this.selectedHeroIndex].name).setFontFamily("monospace").setFontSize(20).setFill("#fff");
+		this.add.text(leftSideSpacing, topSpacing, "Hero Information").setFontFamily("monospace").setFontSize(20).setFill("#fff");
 
 		this.sceneText = this.add.text(leftSideSpacing, topSpacing + 25, "");
 		this.sceneText.setWordWrapWidth((this.cameras.main.width - leftSideSpacing) * 0.95);
