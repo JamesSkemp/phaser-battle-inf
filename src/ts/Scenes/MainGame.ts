@@ -237,6 +237,7 @@ export default class MainGame extends Phaser.Scene {
 	private viewBattle() {
 		this.infoAreaText.setText("");
 		this.scene.bringToTop(BattleScene.Name);
+		(this.scene.get(BattleScene.Name) as BattleScene).updateText();
 	}
 
 	private viewUpgrades() {
