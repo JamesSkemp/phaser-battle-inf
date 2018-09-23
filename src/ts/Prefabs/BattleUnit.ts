@@ -3,9 +3,10 @@ import Stats from "./Stats";
 import Utilities from "./Utilities";
 import SkillTrees from "../Data/SkillTrees";
 import StatGrowth from "../Data/StatGrowth";
+import Battle from "./Battle";
 
 export default class BattleUnit extends Unit {
-	public battle;
+	public battle: Battle;
 	public baseStats: Stats;
 
 	public battleStats: Stats = null;
@@ -79,9 +80,7 @@ export default class BattleUnit extends Unit {
 		const dodged = unit.willDodge();
 
 		if (!supressAttackMessage) {
-			// TODO
-			//player.log('<b>' + this.name + '</b> attacks <b>' + unit.name + '</b>');
-			console.log(this.name + " attacks " + unit.name);
+			this.battle.player.log(this.name + " attacks " + unit.name);
 		}
 
 		if (!dodged) {
@@ -92,9 +91,7 @@ export default class BattleUnit extends Unit {
 			unit.incrementStats(StatGrowth.Action.wasAttacked);
 
 			if (critical) {
-				// TODO
-				//player.log('<p class="padding">It\'s critical!</p>');
-				console.log("It's critical!");
+				this.battle.player.log("It's critical!");
 			}
 
 			const actualDamage = unit.receiveDamage({damage, mult: critical ? 2 : 1});
@@ -105,9 +102,7 @@ export default class BattleUnit extends Unit {
 
 			return true;
 		} else {
-			// TODO
-			//player.log('<b>' + unit.name + '</b> dodges the attack');
-			console.log(unit.name + " dodges the attack");
+			this.battle.player.log(unit.name + " dodges the attack");
 
 			return false;
 		}
@@ -115,8 +110,7 @@ export default class BattleUnit extends Unit {
 
 	public defend() {
 		// TODO should this actually do something?
-		//player.log(this.name + ' is defending');
-		console.log(this.name + " is defending");
+		this.battle.player.log(this.name + " is defending");
 	}
 
 	public useSkillOn(skillName, unit): boolean {
@@ -137,7 +131,7 @@ export default class BattleUnit extends Unit {
 			skill.uses++;
 
 			// TODO
-			console.log(this.name + " uses " + skillName + " on " + unit.name + " " + this.createStatDisplay("sp"));
+			this.battle.player.log(this.name + " uses " + skillName + " on " + unit.name + " " + this.createStatDisplay("sp"));
 
 			skill.fn({
 				user: this
@@ -181,13 +175,13 @@ export default class BattleUnit extends Unit {
 		this.incrementStats(StatGrowth.Action.receivedDamage);
 
 		const statDisplay = this.createStatDisplay("hp");
-		console.log(this.name + " receives " + args.damage + " damage " + args.reason + " " + statDisplay);
+		this.battle.player.log(this.name + " receives " + args.damage + " damage " + args.reason + " " + statDisplay);
 
 		if (this.battleStats.hp <= 0) {
 			if (this.type === "hero") {
-				console.log(this.name + " is defeated");
+				this.battle.player.log(this.name + " is defeated");
 			} else if (this.type === "monster") {
-				console.log(this.name + " is defeated");
+				this.battle.player.log(this.name + " is defeated");
 			}
 			this.battle.unitDead(this);
 
@@ -241,9 +235,7 @@ export default class BattleUnit extends Unit {
 		}
 
 		const statDisplay = this.createStatDisplay("hp");
-		// TODO
-		//player.log(this.name + " regained " + amount + " " + Utilities.statDisplayString(stat) + " " + statDisplay);
-		console.log(this.name + " regained " + amount + " " + Utilities.statDisplayString(stat) + " " + statDisplay);
+		this.battle.player.log(this.name + " regained " + amount + " " + Utilities.statDisplayString(stat) + " " + statDisplay);
 
 		return amount;
 	}

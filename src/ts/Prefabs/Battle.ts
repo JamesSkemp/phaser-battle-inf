@@ -16,7 +16,7 @@ export default class Battle extends BattleActions {
 	public level: number = 0;
 	public done = false;
 	public winningIndex = 0;
-	private player: Player;
+	public player: Player;
 
 	public constructor(player: Player) {
 		super();
