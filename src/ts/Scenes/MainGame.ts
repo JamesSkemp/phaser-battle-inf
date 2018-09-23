@@ -8,6 +8,8 @@ import TownScene from "./TownScene";
 import ShopScene from "./ShopScene";
 import HeroDisplayScene from "./HeroDisplayScene";
 import TrainingScene from "./TrainingScene";
+import { compressToUTF16 as lzStringCompress } from "lz-string";
+import { decompressFromUTF16 as lzStringDecompress } from "lz-string";
 
 export default class MainGame extends Phaser.Scene {
 	/**
@@ -88,7 +90,8 @@ export default class MainGame extends Phaser.Scene {
 		const savedPlayer: Player = Utilities.mergeObjects(new Player(), this.player);
 		savedPlayer.prepareForSave();
 
-		localStorage.setItem("save_player", JSON.stringify(savedPlayer));
+		localStorage.setItem("save_player", lzStringCompress(JSON.stringify(savedPlayer)));
+		console.log("Game saved");
 		return true;
 	}
 
@@ -96,7 +99,12 @@ export default class MainGame extends Phaser.Scene {
 		let dataLoaded = false;
 		this.player = new Player();
 
-		const saveDataString: Player = JSON.parse(localStorage.getItem("save_player"));
+		const storageItem = localStorage.getItem("save_player");
+		const saveDataString: Player = JSON.parse(
+			storageItem === null
+				? null
+				: lzStringDecompress(localStorage.getItem("save_player"))
+		);
 
 		if (saveDataString !== null) {
 			this.player.loadPlayer(saveDataString);
