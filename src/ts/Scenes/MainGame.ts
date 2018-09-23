@@ -178,10 +178,7 @@ export default class MainGame extends Phaser.Scene {
 	}
 
 	private viewHeroData(heroPosition: number) {
-		console.log(heroPosition);
 		if (this.player.heroes[heroPosition] !== null) {
-			const hero = this.player.heroes[heroPosition];
-
 			const sceneToStart = HeroDisplayScene.Name;
 			const heroDisplay = this.sleepPreviousParallelScene(sceneToStart) as HeroDisplayScene;
 			heroDisplay.updateDisplay(heroPosition);

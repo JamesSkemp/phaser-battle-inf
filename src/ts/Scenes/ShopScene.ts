@@ -9,7 +9,6 @@ export default class ShopScene extends Phaser.Scene {
 
 	constructor(handle) {
 		super(handle);
-		console.log(arguments);
 	}
 
 	public create() {

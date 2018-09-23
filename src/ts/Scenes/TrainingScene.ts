@@ -9,7 +9,6 @@ export default class TrainingScene extends Phaser.Scene {
 
 	constructor(handle) {
 		super(handle);
-		console.log(arguments);
 	}
 
 	public create() {
