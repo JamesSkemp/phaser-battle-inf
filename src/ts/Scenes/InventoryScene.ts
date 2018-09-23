@@ -102,8 +102,6 @@ export default class InventoryScene extends Phaser.Scene {
 			if (inventoryItem === undefined) {
 				slotText.setText("");
 			} else {
-				if (i === 0) { console.log(inventoryItem); }
-
 				slotText.setText("Lv" + inventoryItem.level + " " + inventoryItem.name + "\n " + this.itemStatsDisplay(inventoryItem.stats) + "\n Sale price: " + inventoryItem.sellPrice());
 				slotText.input.hitArea.setSize(slotText.width, slotText.width);
 			}
@@ -128,10 +126,8 @@ export default class InventoryScene extends Phaser.Scene {
 	}
 
 	private sellItem(pagePosition: number) {
-		console.log(pagePosition);
 		const player = this.mainGameScene.player;
 		const item = player.inventory[pagePosition + (this.currentPage * 10)] as Item;
-		console.log(item);
 		if (item !== undefined) {
 			player.sellItem(item);
 		}
