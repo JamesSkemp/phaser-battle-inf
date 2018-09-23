@@ -44,6 +44,5 @@ export default class HeroDisplayScene extends Phaser.Scene {
 		}
 
 		this.sceneText.setText(heroContent);
-		console.log(hero);
-}
+	}
 }
